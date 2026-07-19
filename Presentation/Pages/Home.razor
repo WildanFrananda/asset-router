@@ -1,0 +1,123 @@
+﻿@page "/"
+
+<PageTitle>Smart Asset Router</PageTitle>
+
+<div class="enterprise-container">
+    <header class="app-header">
+        <h2>Smart Salary & Asset Allocation Router</h2>
+        <p>Enterprise Edition • Offline Ready (SQLite WASM)</p>
+    </header>
+
+    <div class="card">
+        <h3>Aturan Alokasi</h3>
+
+        <div class="form-group">
+            <label>Preset Strategi:</label>
+            <div class="preset-row">
+                <select class="form-control" @bind="SelectedPreset">
+                    <option value="">-- Pilih Preset --</option>
+                    @foreach (var preset in PortfolioManager.AvailablePresets) {
+                        <option value="@preset">@preset</option>
+                    }
+                </select>
+                <button class="btn btn-secondary" @onclick="ApplyPreset"
+                        disabled="@string.IsNullOrEmpty(SelectedPreset)">
+                    Terapkan
+                </button>
+            </div>
+        </div>
+
+        <table class="rules-table">
+            <thead>
+                <tr>
+                    <th>Bucket</th>
+                    <th class="pct-col">Persentase (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rule in Rules) {
+                    <tr>
+                        <td>@rule.BucketName</td>
+                        <td class="pct-col">
+                            <input type="number" step="1" min="0" max="100" class="form-control pct-input"
+                                   @bind="rule.Percentage" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="@(IsTotalValid ? "total-ok" : "total-bad")">
+                    <td>Total</td>
+                    <td class="pct-col">@TotalPercentage%</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        @if (!IsTotalValid) {
+            <p class="error-text">Total harus tepat 100%. Selisih: @(100m - TotalPercentage)%</p>
+        }
+
+        <button class="btn btn-primary" @onclick="SaveRules" disabled="@(!IsTotalValid)">
+            Simpan Aturan
+        </button>
+        @if (RulesSavedMessage != null) {
+            <p class="success-text">@RulesSavedMessage</p>
+        }
+    </div>
+
+    <div class="input-section card">
+        <div class="form-group">
+            <label>Gaji Bulanan (Rp):</label>
+            <input type="number" class="form-control" @bind="InputSalary" placeholder="Misal: 10000000" />
+        </div>
+
+        <button class="btn btn-primary" @onclick="CalculateAndSave" disabled="@(!CanCalculate)">
+            Hitung & Alokasikan
+        </button>
+
+        @if (ErrorMessage != null) {
+            <p class="error-text">@ErrorMessage</p>
+        }
+    </div>
+
+    <div class="results-grid">
+        <div class="card result-card">
+            <h3>Kalkulasi Terbaru</h3>
+            @if (CurrentResults != null && CurrentResults.Any()) {
+                <ul class="allocation-list">
+                    @foreach (var item in CurrentResults) {
+                        <li>
+                            <span class="category">@item.Category</span>
+                            <span class="details">@item.Percentage% (Rp @item.Amount.ToString("N0"))</span>
+                        </li>
+                    }
+                </ul>
+            } else {
+                <p class="empty-state">Belum ada kalkulasi di sesi ini.</p>
+            }
+        </div>
+
+        <div class="card history-card">
+            <h3>Riwayat Tersimpan (SQLite)</h3>
+            <button class="btn btn-secondary btn-sm mb-2" @onclick="LoadHistory">Refresh Database</button>
+            @if (History.Any()) {
+                <ul class="history-list">
+                    @foreach (var item in History.Take(10)) {
+                        <li>
+                            <small class="date">@item.CreatedAt.ToString("dd MMM yy HH:mm")</small>
+                            <span class="history-details">@item.Category: <strong>Rp @item.Amount.ToString("N0")</strong></span>
+                        </li>
+                    }
+                </ul>
+            } else {
+                <p class="empty-state">Database lokal kosong.</p>
+            }
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <small>Aplikasi ini adalah alat bantu simulasi alokasi aset untuk tujuan edukasi dan perencanaan pribadi. Bukan
+            merupakan nasihat keuangan atau rekomendasi investasi resmi. Keputusan investasi sepenuhnya menjadi tanggung
+            jawab pengguna.</small>
+        </footer>
+    </div>
