@@ -9,6 +9,7 @@ using AssetRouter.Infrastructure.Repositories;
 using AssetRouter.Infrastructure.Data;
 using AssetRouter.Application.Services;
 using AssetRouter.Infrastructure.DataSources;
+using AssetRouter.Infrastructure.Persistence;
 
 Batteries_V2.Init();
 
@@ -20,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data S
 
 builder.Services.AddScoped<IAllocationRepository, AllocationRepository>();
 builder.Services.AddScoped<IRuleRepository, RuleRepository>();
+builder.Services.AddScoped<IDbPersistence, IndexedDbPersistence>();
 
 builder.Services.AddScoped<IStockDataSource, HttpStockDAtaSource>();
 builder.Services.AddScoped<StockScreenerService>();
@@ -37,6 +39,9 @@ builder.Services.AddScoped(sp => new HttpClient {
 var host = builder.Build();
 
 using (var scope = host.Services.CreateScope()) {
+    var persistence = scope.ServiceProvider.GetRequiredService<IDbPersistence>();
+    await persistence.RestoreAsync();
+
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await dbContext.Database.EnsureCreatedAsync();
 }
