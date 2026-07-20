@@ -14,6 +14,7 @@ public partial class Home {
     private decimal InputSalary;
     private string? RulesSavedMessage;
     private string? ErrorMessage;
+    private EmergencyFundStatus? FundStatus;
 
     private IEnumerable<AssetAllocation>? CurrentResults;
 
@@ -58,5 +59,6 @@ public partial class Home {
 
     private async Task LoadHistory() {
         History = await PortfolioManager.GetHistoryAsync();
+        FundStatus = await PortfolioManager.GetEmergencyFundStatusAsync(Rules);
     }
 }

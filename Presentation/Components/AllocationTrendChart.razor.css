@@ -1,0 +1,47 @@
+.trend-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.trend {
+    width: 100%;
+}
+
+.trend-label {
+    font-size: 9px;
+    fill: #7f8c8d;
+}
+
+.trend-axis {
+    stroke: #dfe6e9;
+    stroke-width: 1;
+}
+
+.trend-legend {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.8em;
+    color: #34495e;
+}
+
+.trend-legend li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.trend-legend .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+}
+
+.empty-state {
+    color: #95a5a6;
+    font-style: italic;
+}

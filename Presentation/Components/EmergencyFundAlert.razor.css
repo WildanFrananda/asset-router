@@ -1,0 +1,47 @@
+.ef-alert {
+    border-radius: 6px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid;
+}
+
+.ef-alert.progress {
+    background: #f4f8fb;
+    border-color: #d6e4f0;
+}
+
+.ef-alert.reached {
+    background: #eafaf1;
+    border-color: #c8ebd8;
+}
+
+.ef-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+}
+
+.ef-bar {
+    height: 8px;
+    background: #e8eef2;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.ef-fill {
+    height: 100%;
+    background: #3498db;
+    transition: width 0.3s;
+}
+
+.ef-alert.reached .ef-fill {
+    background: #27ae60;
+}
+
+.ef-message {
+    margin: 8px 0 0;
+    font-size: 0.85em;
+    color: #34495e;
+}

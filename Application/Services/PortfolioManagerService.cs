@@ -10,6 +10,9 @@ public class PortfolioManagerService(
     IAllocationRepository allocationRepository
 ) {
     public IEnumerable<string> AvailablePresets => presets.Select(s => s.Name);
+    public const string EmergencyBucket = "Emergency Fund";
+    public const string ExpenseBucket = "Expense Fund";
+    private const int TargetMonths = 6;
 
     public List<AllocationRule> GetPresetRules(string presetName) {
         var preset = presets.FirstOrDefault(p => p.Name == presetName)
@@ -55,6 +58,34 @@ public class PortfolioManagerService(
 
     public Task<List<AllocationSnapshot>> GetHistoryAsync() {
         return allocationRepository.GetHistoryAsync();
+    }
+
+    public async Task<EmergencyFundStatus> GetEmergencyFundStatusAsync(List<AllocationRule> rules) {
+        var history = await allocationRepository.GetHistoryAsync();
+
+        var accumulated = history
+            .SelectMany(s => s.Items)
+            .Where(i => i.Category == EmergencyBucket)
+            .Sum(i => i.Amount);
+
+        var lastSalary = history.FirstOrDefault()?.Salary ?? 0m;
+        var expensePercent = rules.FirstOrDefault(r => r.BucketName == ExpenseBucket)?.Percentage ?? 0m;
+        var monthlyExpense = lastSalary * expensePercent / 100m;
+
+        var status = new EmergencyFundStatus {
+            Accumulated = accumulated,
+            MonthlyExpense = monthlyExpense,
+            Target = monthlyExpense * TargetMonths
+        };
+
+        if (status.IsTargetReached) {
+            status.SuggestedBucket = rules
+                .Where(r => r.BucketName != EmergencyBucket && r.BucketName != ExpenseBucket)
+                .OrderBy(r => r.Percentage)
+                .FirstOrDefault()?.BucketName;
+        }
+
+        return status;
     }
 
     private static void ValidateRules(List<AllocationRule> rules) {

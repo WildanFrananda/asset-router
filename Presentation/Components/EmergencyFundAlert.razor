@@ -1,0 +1,27 @@
+@if (Status != null && Status.Target > 0) {
+    <div class="ef-alert @(Status.IsTargetReached ? "reached" : "progress")">
+        <div class="ef-head">
+            <strong>Dana Darurat</strong>
+            <span>Rp @Status.Accumulated.ToString("N0") / Rp @Status.Target.ToString("N0")</span>
+        </div>
+
+        <div class="ef-bar">
+            <div class="ef-fill" style="width:@Bar(Status.ProgressPercent)%"></div>
+        </div>
+
+        @if (Status.IsTargetReached) {
+            <p class="ef-message">
+                Target 6× pengeluaran bulanan sudah tercapai.
+                @if (Status.SuggestedBucket != null) {
+                    <text>Pertimbangkan mengalihkan porsi Dana Darurat ke <strong>@Status.SuggestedBucket</strong>.</text>
+                }
+            </p>
+        }
+        else {
+            <p class="ef-message">
+                Progress @Status.ProgressPercent.ToString("N0")% menuju target 6× pengeluaran bulanan
+                (Rp @Status.MonthlyExpense.ToString("N0")/bulan).
+            </p>
+        }
+    </div>
+}

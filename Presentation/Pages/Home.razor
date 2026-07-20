@@ -84,14 +84,21 @@
         <div class="card result-card">
         <h3>Kalkulasi Terbaru</h3>
         @if (CurrentResults != null && CurrentResults.Any()) {
+            <EmergencyFundAlert Status="FundStatus" />
             <AllocationChart Items="CurrentResults" />
         } else {
             <p class="empty-state">Belum ada kalkulasi di sesi ini.</p>
         }
     </div>
 
+    <div class="card">
+        <h3>Tren Alokasi</h3>
+        <AllocationTrendChart History="History" />
+    </div>
 
-                <div class="card history-card">
+
+
+        <div class="card history-card">
             <h3>Riwayat Kalkulasi</h3>
             <button class="btn btn-secondary btn-sm mb-2" @onclick="LoadHistory">Refresh</button>
             @if (History.Count > 0) {
