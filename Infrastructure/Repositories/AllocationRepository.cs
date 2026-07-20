@@ -1,18 +1,21 @@
 namespace AssetRouter.Infrastructure.Repositories;
 
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
 using AssetRouter.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 public class AllocationRepository(AppDbContext dbContext) : IAllocationRepository {
-    public async Task SaveAllocationAsync(AssetAllocation allocation) {
-        dbContext.Allocations.Add(allocation);
+    public async Task SaveSnapshotAsync(AllocationSnapshot snapshot) {
+        dbContext.Snapshots.Add(snapshot);
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<AssetAllocation>> GetAllHistoryAsync() {
-        return await dbContext.Allocations.OrderByDescending(a => a.CreatedAt).ToListAsync();
+    public Task<List<AllocationSnapshot>> GetHistoryAsync() {
+        return dbContext.Snapshots
+            .AsNoTracking()
+            .Include(s => s.Items)
+            .OrderByDescending(s => s.CreatedAt)
+            .ToListAsync();
     }
 }

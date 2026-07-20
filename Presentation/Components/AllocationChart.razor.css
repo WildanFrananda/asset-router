@@ -1,0 +1,64 @@
+.chart-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.donut {
+    width: 100%;
+    max-width: 220px;
+}
+
+.donut-title {
+    font-size: 12px;
+    fill: #7f8c8d;
+}
+
+.donut-value {
+    font-size: 13px;
+    font-weight: bold;
+    fill: #2c3e50;
+}
+
+.legend {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 0.9em;
+    border-bottom: 1px solid #eee;
+}
+
+.legend li:last-child {
+    border-bottom: none;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.legend .label {
+    flex: 1;
+}
+
+.legend .pct {
+    font-weight: 600;
+    color: #7f8c8d;
+}
+
+.legend .amount {
+    font-weight: 600;
+    min-width: 110px;
+    text-align: right;
+}

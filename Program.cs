@@ -8,6 +8,7 @@ using AssetRouter.Infrastructure.Strategies;
 using AssetRouter.Infrastructure.Repositories;
 using AssetRouter.Infrastructure.Data;
 using AssetRouter.Application.Services;
+using AssetRouter.Infrastructure.DataSources;
 
 Batteries_V2.Init();
 
@@ -20,13 +21,18 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data S
 builder.Services.AddScoped<IAllocationRepository, AllocationRepository>();
 builder.Services.AddScoped<IRuleRepository, RuleRepository>();
 
+builder.Services.AddScoped<IStockDataSource, HttpStockDAtaSource>();
+builder.Services.AddScoped<StockScreenerService>();
+
 builder.Services.AddScoped<IAllocationPreset, DefaultPreset>();
 builder.Services.AddScoped<IAllocationPreset, ConservativePreset>();
 builder.Services.AddScoped<IAllocationPreset, AggressivePreset>();
 
 builder.Services.AddScoped<PortfolioManagerService>();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(sp => new HttpClient {
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+});
 
 var host = builder.Build();
 

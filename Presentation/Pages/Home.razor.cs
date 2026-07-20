@@ -9,13 +9,13 @@ public partial class Home {
     private PortfolioManagerService PortfolioManager { get; set; } = default!;
 
     private List<AllocationRule> Rules = new();
+    private List<AllocationSnapshot> History = new();
     private string SelectedPreset = "";
     private decimal InputSalary;
     private string? RulesSavedMessage;
     private string? ErrorMessage;
 
     private IEnumerable<AssetAllocation>? CurrentResults;
-    private IEnumerable<AssetAllocation> History = Array.Empty<AssetAllocation>();
 
     private decimal TotalPercentage => Rules.Sum(r => r.Percentage);
     private bool IsTotalValid => Rules.Count > 0 && TotalPercentage == 100m;
@@ -47,7 +47,8 @@ public partial class Home {
         try {
             ErrorMessage = null;
             await PortfolioManager.SaveRulesAsync(Rules);
-            CurrentResults = await PortfolioManager.GenerateAndSavePortfolioAsync(InputSalary, Rules);
+            var snapshot = await PortfolioManager.GenerateAndSavePortfolioAsync(InputSalary, Rules);
+            CurrentResults = snapshot.Items;
             await LoadHistory();
         }
         catch (Exception ex) {

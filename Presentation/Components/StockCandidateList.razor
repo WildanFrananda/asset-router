@@ -1,0 +1,39 @@
+<div class="stock-panel">
+    <h3>Kandidat Saham (Bucket Saham Fundamental)</h3>
+
+    @if (IsLoading) {
+        <p class="empty-state">Memuat data saham…</p>
+    } else if (LoadError != null) {
+        <p class="error-text">@LoadError</p>
+    } else if (Candidates.Count == 0) {
+        <p class="empty-state">Tidak ada saham yang lolos filter.</p>
+    } else {
+        <table class="stock-table">
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Sektor</th>
+                    <th>P/E</th>
+                    <th>DER</th>
+                    <th>ROE</th>
+                    <th>Div. Yield</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var stock in Candidates) {
+                    <tr>
+                        <td class="ticker" title="@stock.Name">@stock.Ticker</td>
+                        <td>@stock.Sector</td>
+                        <td>@stock.PriceToEarnings.ToString("N1")</td>
+                        <td>@stock.DebtToEquity.ToString("N1")</td>
+                        <td>@stock.ReturnOnEquity.ToString("N1")%</td>
+                        <td>@stock.DividendYield.ToString("N1")%</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <small class="stock-note">
+            Filter: P/E &lt; rata-rata sektor, DER &lt; 1, ROE &gt; 15%. Dataset statis (mock) — referensi edukasi, bukan rekomendasi.
+        </small>
+    }
+</div>

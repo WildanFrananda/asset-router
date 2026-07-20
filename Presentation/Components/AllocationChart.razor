@@ -1,0 +1,29 @@
+<div class="chart-wrapper">
+    <svg viewBox="0 0 200 200" class="donut" role="img" aria-label="Grafik alokasi aset">
+        <circle cx="100" cy="100" r="80" fill="transparent"
+                stroke="#ecf0f1" stroke-width="30" />
+
+        <g transform="rotate(-90 100 100)">
+            @foreach (var seg in Segments) {
+                <circle cx="100" cy="100" r="80" fill="transparent"
+                        stroke="@seg.Color" stroke-width="30"
+                        stroke-dasharray="@seg.Dash"
+                        stroke-dashoffset="@seg.Offset" />
+            }
+        </g>
+
+        <text x="100" y="95" text-anchor="middle" class="donut-title">Total</text>
+        <text x="100" y="115" text-anchor="middle" class="donut-value">Rp @TotalAmount.ToString("N0")</text>
+    </svg>
+
+    <ul class="legend">
+        @foreach (var seg in Segments) {
+            <li>
+                <span class="dot" style="background:@seg.Color"></span>
+                <span class="label">@seg.Category</span>
+                <span class="pct">@seg.Percentage%</span>
+                <span class="amount">Rp @seg.Amount.ToString("N0")</span>
+            </li>
+        }
+    </ul>
+</div>

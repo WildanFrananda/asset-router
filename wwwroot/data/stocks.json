@@ -1,0 +1,164 @@
+[
+    {
+        "ticker": "UNVR",
+        "name": "Unilever Indonesia",
+        "sector": "Consumer",
+        "priceToEarnings": 30.0,
+        "debtToEquity": 0.3,
+        "returnOnEquity": 35.0,
+        "dividendYield": 3.2
+    },
+    {
+        "ticker": "ICBP",
+        "name": "Indofood CBP",
+        "sector": "Consumer",
+        "priceToEarnings": 15.0,
+        "debtToEquity": 0.5,
+        "returnOnEquity": 18.0,
+        "dividendYield": 2.1
+    },
+    {
+        "ticker": "INDF",
+        "name": "Indofood Sukses Makmur",
+        "sector": "Consumer",
+        "priceToEarnings": 10.0,
+        "debtToEquity": 0.7,
+        "returnOnEquity": 12.0,
+        "dividendYield": 4.0
+    },
+    {
+        "ticker": "MYOR",
+        "name": "Mayora Indah",
+        "sector": "Consumer",
+        "priceToEarnings": 22.0,
+        "debtToEquity": 0.6,
+        "returnOnEquity": 16.0,
+        "dividendYield": 1.5
+    },
+    {
+        "ticker": "BBCA",
+        "name": "Bank Central Asia",
+        "sector": "Banking",
+        "priceToEarnings": 24.0,
+        "debtToEquity": 0.7,
+        "returnOnEquity": 21.0,
+        "dividendYield": 1.8
+    },
+    {
+        "ticker": "BBRI",
+        "name": "Bank Rakyat Indonesia",
+        "sector": "Banking",
+        "priceToEarnings": 12.0,
+        "debtToEquity": 0.8,
+        "returnOnEquity": 19.0,
+        "dividendYield": 4.5
+    },
+    {
+        "ticker": "BMRI",
+        "name": "Bank Mandiri",
+        "sector": "Banking",
+        "priceToEarnings": 11.0,
+        "debtToEquity": 0.9,
+        "returnOnEquity": 20.0,
+        "dividendYield": 4.2
+    },
+    {
+        "ticker": "BRIS",
+        "name": "Bank Syariah Indonesia",
+        "sector": "Banking",
+        "priceToEarnings": 18.0,
+        "debtToEquity": 0.9,
+        "returnOnEquity": 14.0,
+        "dividendYield": 1.0
+    },
+    {
+        "ticker": "ADRO",
+        "name": "Adaro Energy",
+        "sector": "Energy",
+        "priceToEarnings": 6.0,
+        "debtToEquity": 0.4,
+        "returnOnEquity": 25.0,
+        "dividendYield": 8.0
+    },
+    {
+        "ticker": "PGAS",
+        "name": "Perusahaan Gas Negara",
+        "sector": "Energy",
+        "priceToEarnings": 8.0,
+        "debtToEquity": 1.2,
+        "returnOnEquity": 16.0,
+        "dividendYield": 6.0
+    },
+    {
+        "ticker": "PTBA",
+        "name": "Bukit Asam",
+        "sector": "Energy",
+        "priceToEarnings": 7.0,
+        "debtToEquity": 0.5,
+        "returnOnEquity": 22.0,
+        "dividendYield": 7.5
+    },
+    {
+        "ticker": "MEDC",
+        "name": "Medco Energi",
+        "sector": "Energy",
+        "priceToEarnings": 9.0,
+        "debtToEquity": 1.8,
+        "returnOnEquity": 18.0,
+        "dividendYield": 1.2
+    },
+    {
+        "ticker": "TLKM",
+        "name": "Telkom Indonesia",
+        "sector": "Telco",
+        "priceToEarnings": 14.0,
+        "debtToEquity": 0.8,
+        "returnOnEquity": 18.0,
+        "dividendYield": 4.8
+    },
+    {
+        "ticker": "EXCL",
+        "name": "XL Axiata",
+        "sector": "Telco",
+        "priceToEarnings": 20.0,
+        "debtToEquity": 1.6,
+        "returnOnEquity": 6.0,
+        "dividendYield": 1.0
+    },
+    {
+        "ticker": "ISAT",
+        "name": "Indosat",
+        "sector": "Telco",
+        "priceToEarnings": 16.0,
+        "debtToEquity": 1.4,
+        "returnOnEquity": 11.0,
+        "dividendYield": 2.0
+    },
+    {
+        "ticker": "GOTO",
+        "name": "GoTo Gojek Tokopedia",
+        "sector": "Tech",
+        "priceToEarnings": 85.0,
+        "debtToEquity": 0.2,
+        "returnOnEquity": -5.0,
+        "dividendYield": 0.0
+    },
+    {
+        "ticker": "KLBF",
+        "name": "Kalbe Farma",
+        "sector": "Healthcare",
+        "priceToEarnings": 18.0,
+        "debtToEquity": 0.2,
+        "returnOnEquity": 17.0,
+        "dividendYield": 2.5
+    },
+    {
+        "ticker": "MIKA",
+        "name": "Mitra Keluarga",
+        "sector": "Healthcare",
+        "priceToEarnings": 25.0,
+        "debtToEquity": 0.1,
+        "returnOnEquity": 19.0,
+        "dividendYield": 1.3
+    }
+]

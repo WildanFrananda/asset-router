@@ -40,7 +40,7 @@
                         <td>@rule.BucketName</td>
                         <td class="pct-col">
                             <input type="number" step="1" min="0" max="100" class="form-control pct-input"
-                                   @bind="rule.Percentage" />
+                                @bind="rule.Percentage" />
                         </td>
                     </tr>
                 }
@@ -82,36 +82,39 @@
 
     <div class="results-grid">
         <div class="card result-card">
-            <h3>Kalkulasi Terbaru</h3>
-            @if (CurrentResults != null && CurrentResults.Any()) {
-                <ul class="allocation-list">
-                    @foreach (var item in CurrentResults) {
+        <h3>Kalkulasi Terbaru</h3>
+        @if (CurrentResults != null && CurrentResults.Any()) {
+            <AllocationChart Items="CurrentResults" />
+        } else {
+            <p class="empty-state">Belum ada kalkulasi di sesi ini.</p>
+        }
+    </div>
+
+
+                <div class="card history-card">
+            <h3>Riwayat Kalkulasi</h3>
+            <button class="btn btn-secondary btn-sm mb-2" @onclick="LoadHistory">Refresh</button>
+            @if (History.Count > 0) {
+                <ul class="history-list">
+                    @foreach (var snap in History.Take(5)) {
                         <li>
-                            <span class="category">@item.Category</span>
-                            <span class="details">@item.Percentage% (Rp @item.Amount.ToString("N0"))</span>
+                            <div class="history-header">
+                                <small class="date">@snap.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</small>
+                                <strong>Rp @snap.Salary.ToString("N0")</strong>
+                            </div>
+                            <small class="history-items">
+                                @string.Join(" • ", snap.Items.Select(i => $"{i.Category} {i.Percentage}%"))
+                            </small>
                         </li>
                     }
                 </ul>
-            } else {
-                <p class="empty-state">Belum ada kalkulasi di sesi ini.</p>
+            }
+            else {
+                <p class="empty-state">Belum ada riwayat.</p>
             }
         </div>
-
-        <div class="card history-card">
-            <h3>Riwayat Tersimpan (SQLite)</h3>
-            <button class="btn btn-secondary btn-sm mb-2" @onclick="LoadHistory">Refresh Database</button>
-            @if (History.Any()) {
-                <ul class="history-list">
-                    @foreach (var item in History.Take(10)) {
-                        <li>
-                            <small class="date">@item.CreatedAt.ToString("dd MMM yy HH:mm")</small>
-                            <span class="history-details">@item.Category: <strong>Rp @item.Amount.ToString("N0")</strong></span>
-                        </li>
-                    }
-                </ul>
-            } else {
-                <p class="empty-state">Database lokal kosong.</p>
-            }
+        <div class="card">
+            <StockCandidateList />
         </div>
     </div>
 

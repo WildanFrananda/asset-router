@@ -1,0 +1,44 @@
+.stock-panel h3 {
+    margin-top: 0;
+}
+
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.stock-table th,
+.stock-table td {
+    text-align: right;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.stock-table th:first-child,
+.stock-table td:first-child,
+.stock-table th:nth-child(2),
+.stock-table td:nth-child(2) {
+    text-align: left;
+}
+
+.ticker {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.stock-note {
+    display: block;
+    margin-top: 10px;
+    color: #95a5a6;
+}
+
+.empty-state {
+    color: #95a5a6;
+    font-style: italic;
+}
+
+.error-text {
+    color: #e74c3c;
+    font-size: 0.9em;
+}

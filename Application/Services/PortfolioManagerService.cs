@@ -34,28 +34,27 @@ public class PortfolioManagerService(
         await ruleRepository.ReplaceRulesAsync(rules);
     }
 
-    public async Task<List<AssetAllocation>> GenerateAndSavePortfolioAsync(decimal salary, List<AllocationRule> rules) {
+    public async Task<AllocationSnapshot> GenerateAndSavePortfolioAsync(decimal salary, List<AllocationRule> rules) {
         if (salary <= 0) {
-            throw new ArgumentException("Salary must be above 0", nameof(salary));
+            throw new ArgumentException("Gaji harus di atas 0", nameof(salary));
         }
-
         ValidateRules(rules);
 
-        var results = rules.Select(r => new AssetAllocation {
-            Category = r.BucketName,
-            Percentage = r.Percentage,
-            Amount = salary * r.Percentage / 100m
-        }).ToList();
+        var snapshot = new AllocationSnapshot {
+            Salary = salary,
+            Items = rules.Select(r => new AssetAllocation {
+                Category = r.BucketName,
+                Percentage = r.Percentage,
+                Amount = salary * r.Percentage / 100m
+            }).ToList()
+        };
 
-        foreach (var item in results) {
-            await allocationRepository.SaveAllocationAsync(item);
-        }
-
-        return results;
+        await allocationRepository.SaveSnapshotAsync(snapshot);
+        return snapshot;
     }
 
-    public Task<IEnumerable<AssetAllocation>> GetHistoryAsync() {
-        return allocationRepository.GetAllHistoryAsync();
+    public Task<List<AllocationSnapshot>> GetHistoryAsync() {
+        return allocationRepository.GetHistoryAsync();
     }
 
     private static void ValidateRules(List<AllocationRule> rules) {
