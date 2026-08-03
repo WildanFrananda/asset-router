@@ -1,9 +1,9 @@
 namespace AssetRouter.Infrastructure.Repositories;
 
-using Microsoft.EntityFrameworkCore;
-using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
+using AssetRouter.Core.Interfaces;
 using AssetRouter.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 public class RuleRepository(AppDbContext dbContext) : IRuleRepository {
     public Task<List<AllocationRule>> GetRulesAsync() {

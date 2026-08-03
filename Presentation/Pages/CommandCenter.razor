@@ -1,0 +1,67 @@
+@page "/command-center"                                                                                                                                                                                 
+@page "/"                                                                                                                                                                                               
+                                                                                                                                                                                                        
+<div class="command-center-page">                                                                                                                                                                       
+    <!-- Header Title & Control Action Bar -->                                                                                                                                                          
+    <header class="command-center-header">                                                                                                                                                              
+        <div class="header-branding">                                                                                                                                                                   
+            <h1 class="page-title">                                                                                                                                                                     
+                <span class="glowing-icon">🌌</span> Sci-Fi Financial Command Center                                                                                                                    
+            </h1>                                                                                                                                                                                       
+            <p class="page-subtitle">                                                                                                                                                                   
+                Autonomous node routing, liquid overflow pipelines & multi-universe compounding engine.                                                                                                 
+            </p>                                                                                                                                                                                        
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="header-actions">                                                                                                                                                                    
+            <!-- Percentage Validation Indicator -->                                                                                                                                                    
+            <div class="total-percent-indicator @(IsPercentageValid ? "valid-percent" : "invalid-percent")">                                                                                            
+                <span>Total Allocation:</span>                                                                                                                                                          
+                <strong>@TotalAllocationPercent%</strong>                                                                                                                                               
+                @if (!IsPercentageValid) {
+                    <span class="warning-tooltip" title="Total allocation must equal 100%">⚠️ Fix Total</span>                                                                                          
+                }                                                                                                                                                                                       
+            </div>                                                                                                                                                                                      
+                                                                                                                                                                                                        
+            <!-- Save Layout Button -->                                                                                                                                                                 
+            <button class="btn-save-layout" @onclick="SaveLayoutAsync" disabled="@_isSaving">                                                                                                           
+                @if (_isSaving) {
+                    <span class="spinner"></span>                                                                                                                                                       
+                    <span>Saving...</span>                                                                                                                                                              
+                }                                                                                                                                                                                       
+                else {
+                    <span>💾 Save Node Configuration</span>                                                                                                                                             
+                }                                                                                                                                                                                       
+            </button>                                                                                                                                                                                   
+        </div>                                                                                                                                                                                          
+    </header>                                                                                                                                                                                           
+                                                                                                                                                                                                        
+    @if (_isLoading) {
+        <div class="loading-state">                                                                                                                                                                     
+            <div class="radar-spinner"></div>                                                                                                                                                           
+            <p>Initializing Sci-Fi Financial Engines...</p>                                                                                                                                             
+        </div>                                                                                                                                                                                          
+    }                                                                                                                                                                                                   
+    else {
+        <!-- 1. Top Component: Crisis & Stress Tester Bar -->                                                                                                                                           
+        <TopCrisisBar Scenarios="@CommandCenterService.GetCrisisScenarios()"                                                                                                                                           
+                        ActiveResult="@State.ActiveStressTestResult"                                                                                                                                      
+                        SelectedScenarioId="@State.SelectedScenario.Id"                                                                                                                                   
+                        OnScenarioSelected="HandleScenarioSelected"                                                                                                                                       
+                        OnRunSimulation="HandleRunSimulation" />                                                                                                                                          
+                                                                                                                                                                                                        
+        <!-- 2. Middle Component: Interactive Canvas Node Graph & Overflow Pipes -->                                                                                                                    
+        <NodeGraphCanvas MonthlySalary="@State.MonthlySalary"                                                                                                                                           
+                            Nodes="@State.CurrentNodes"                                                                                                                                                    
+                            ActiveValves="@State.OverflowResult.ActiveValves"                                                                                                                              
+                            OnSalaryChanged="HandleSalaryChanged"                                                                                                                                          
+                            OnNodesUpdated="HandleNodesUpdated" />                                                                                                                                         
+                                                                                                                                                                                                        
+        <!-- 3. Bottom Component: Parallel Universe Timeline Traveler Slider -->                                                                                                                        
+        <BottomTimelineSlider Universes="@State.ParallelUniverses"                                                                                                                                      
+                                ActiveUniverseId="@_activeUniverseId"                                                                                                                                     
+                                SelectedYear="@_selectedYear"                                                                                                                                             
+                                OnUniverseSelected="HandleUniverseSelected"                                                                                                                               
+                                OnYearSelected="HandleYearSelected" />                                                                                                                                    
+    }                                                                                                                                                                                                   
+</div>

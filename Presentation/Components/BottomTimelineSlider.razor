@@ -1,0 +1,56 @@
+@using AssetRouter.Core.Entities                                                                                                                                                                        
+                                                                                                                                                                                                            
+<div class="timeline-container">                                                                                                                                                                        
+    <!-- Top Row: Universe Switcher Badges & Retire Estimate -->                                                                                                                                        
+    <div class="timeline-header">                                                                                                                                                                       
+        <div class="universe-selector">                                                                                                                                                                 
+            @foreach (var u in Universes) {
+                <button class="universe-btn @(u.Id == ActiveUniverseId ? "active-" + u.BadgeColor : "")"                                                                                                
+                        @onclick="() => SelectUniverse(u.Id)">                                                                                                                                          
+                    <span class="universe-indicator"></span>                                                                                                                                            
+                    <span>@u.Name</span>                                                                                                                                                                
+                </button>                                                                                                                                                                               
+            }                                                                                                                                                                                           
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="retire-badge">                                                                                                                                                                      
+            <span class="retire-icon">🏖️</span>                                                                                                                                                         
+            <span>Est. Retire Age: <strong>@(ActiveUniverse?.EstimatedRetirementAge ?? 65) Yrs</strong></span>                                                                                          
+        </div>                                                                                                                                                                                          
+    </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    <!-- Middle Row: Interactive Year Slider -->                                                                                                                                                        
+    <div class="slider-section">                                                                                                                                                                        
+        <div class="year-label-start">2026</div>                                                                                                                                                        
+        <input type="range"                                                                                                                                                                             
+                class="timeline-range-input"                                                                                                                                                             
+                min="2026"                                                                                                                                                                               
+                max="2045"                                                                                                                                                                               
+                value="@SelectedYear"                                                                                                                                                                    
+                @oninput="HandleYearInput" />                                                                                                                                                            
+        <div class="year-label-end">2045</div>                                                                                                                                                          
+    </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    <!-- Bottom Row: Wealth Snapshot Metric Card -->                                                                                                                                                    
+    <div class="wealth-summary-bar">                                                                                                                                                                    
+        <div class="summary-item">                                                                                                                                                                      
+            <span class="summary-label">Target Year</span>                                                                                                                                              
+            <span class="summary-value year-highlight">@SelectedYear</span>                                                                                                                             
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="summary-item">                                                                                                                                                                      
+            <span class="summary-label">Total Principal Invested</span>                                                                                                                                 
+            <span class="summary-value">@FormatCurrency(CurrentSnapshot?.TotalInvested ?? 0m)</span>                                                                                                    
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="summary-item">                                                                                                                                                                      
+            <span class="summary-label">Compounded Returns</span>                                                                                                                                       
+            <span class="summary-value returns-highlight">+@FormatCurrency(CurrentSnapshot?.InvestmentReturns ?? 0m)</span>                                                                             
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="summary-item total-wealth-item">                                                                                                                                                    
+            <span class="summary-label">Projected Net Worth</span>                                                                                                                                      
+            <span class="summary-value wealth-highlight">@FormatCurrency(CurrentSnapshot?.TotalWealth ?? 0m)</span>                                                                                     
+        </div>                                                                                                                                                                                          
+    </div>                                                                                                                                                                                              
+</div>

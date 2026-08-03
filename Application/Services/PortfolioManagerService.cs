@@ -1,7 +1,7 @@
 namespace AssetRouter.Application.Services;
 
-using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
+using AssetRouter.Core.Interfaces;
 using AssetRouter.Infrastructure.Strategies;
 
 public class PortfolioManagerService(
@@ -39,7 +39,7 @@ public class PortfolioManagerService(
 
     public async Task<AllocationSnapshot> GenerateAndSavePortfolioAsync(decimal salary, List<AllocationRule> rules) {
         if (salary <= 0) {
-            throw new ArgumentException("Gaji harus di atas 0", nameof(salary));
+            throw new ArgumentException("Salary must be above 0", nameof(salary));
         }
         ValidateRules(rules);
 

@@ -1,15 +1,15 @@
+using AssetRouter;
+using AssetRouter.Application.Services;
+using AssetRouter.Core.Interfaces;
+using AssetRouter.Infrastructure.Data;
+using AssetRouter.Infrastructure.DataSources;
+using AssetRouter.Infrastructure.Persistence;
+using AssetRouter.Infrastructure.Repositories;
+using AssetRouter.Infrastructure.Strategies;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
-using AssetRouter;
-using AssetRouter.Core.Interfaces;
-using AssetRouter.Infrastructure.Strategies;
-using AssetRouter.Infrastructure.Repositories;
-using AssetRouter.Infrastructure.Data;
-using AssetRouter.Application.Services;
-using AssetRouter.Infrastructure.DataSources;
-using AssetRouter.Infrastructure.Persistence;
 
 Batteries_V2.Init();
 
@@ -31,6 +31,9 @@ builder.Services.AddScoped<IAllocationPreset, ConservativePreset>();
 builder.Services.AddScoped<IAllocationPreset, AggressivePreset>();
 
 builder.Services.AddScoped<PortfolioManagerService>();
+
+builder.Services.AddScoped<INodeRepository, LocalNodeRepository>();
+builder.Services.AddScoped<CommandCenterService>();
 
 builder.Services.AddScoped(sp => new HttpClient {
     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)

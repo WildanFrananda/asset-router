@@ -1,7 +1,7 @@
 namespace AssetRouter.Infrastructure.Strategies;
 
-using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
+using AssetRouter.Core.Interfaces;
 
 public class AggressivePreset : IAllocationPreset {
     public string Name => "Aggressive (High Risk)";

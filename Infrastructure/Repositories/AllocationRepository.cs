@@ -1,9 +1,9 @@
 namespace AssetRouter.Infrastructure.Repositories;
 
-using Microsoft.EntityFrameworkCore;
-using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
+using AssetRouter.Core.Interfaces;
 using AssetRouter.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 public class AllocationRepository(AppDbContext dbContext) : IAllocationRepository {
     public async Task SaveSnapshotAsync(AllocationSnapshot snapshot) {

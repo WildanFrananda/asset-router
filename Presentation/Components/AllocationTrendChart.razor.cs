@@ -1,9 +1,8 @@
 namespace AssetRouter.Presentation.Components;
 
 using System.Globalization;
-using Microsoft.AspNetCore.Components;
 using AssetRouter.Core.Entities;
-using System.Runtime.Serialization.Formatters;
+using Microsoft.AspNetCore.Components;
 
 public partial class AllocationTrendChart {
     [Parameter, EditorRequired]

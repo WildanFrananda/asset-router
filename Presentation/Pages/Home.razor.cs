@@ -1,8 +1,8 @@
 namespace AssetRouter.Presentation.Pages;
 
-using Microsoft.AspNetCore.Components;
-using AssetRouter.Core.Entities;
 using AssetRouter.Application.Services;
+using AssetRouter.Core.Entities;
+using Microsoft.AspNetCore.Components;
 
 public partial class Home {
     [Inject]

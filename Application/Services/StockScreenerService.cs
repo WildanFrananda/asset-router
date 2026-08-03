@@ -1,7 +1,7 @@
 namespace AssetRouter.Application.Services;
 
-using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
+using AssetRouter.Core.Interfaces;
 
 public class StockScreenerService(IStockDataSource dataSource) {
     public const decimal MaxDebtToEquity = 1.0m;

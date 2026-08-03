@@ -1,7 +1,7 @@
 namespace AssetRouter.Core.Interfaces;
 
-using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
+using AssetRouter.Core.Interfaces;
 
 public class ConservativePreset : IAllocationPreset {
     public string Name => "Conservative (Safe)";

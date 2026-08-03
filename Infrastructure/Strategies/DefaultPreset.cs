@@ -1,7 +1,7 @@
 namespace AssetRouter.Infrastructure.Strategies;
 
-using AssetRouter.Core.Interfaces;
 using AssetRouter.Core.Entities;
+using AssetRouter.Core.Interfaces;
 
 public class DefaultPreset : IAllocationPreset {
     public const string PresetName = "Default";

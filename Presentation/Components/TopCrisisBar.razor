@@ -1,0 +1,72 @@
+@using AssetRouter.Core.Entities                                                                                                                                                                        
+                                                                                                                                                                                                            
+<div class="crisis-bar">                                                                                                                                                                                
+    <div class="crisis-bar-header">                                                                                                                                                                     
+        <!-- Left: Survival Score Gauge -->                                                                                                                                                             
+        <div class="score-section">                                                                                                                                                                     
+            <div class="score-badge" style="background: @GetScoreBadgeBackground(ActiveResult?.SurvivalScore ?? 100);">                                                                                 
+                @(ActiveResult?.SurvivalScore ?? 100)                                                                                                                                                   
+            </div>                                                                                                                                                                                      
+            <div class="score-info">                                                                                                                                                                    
+                <span class="score-title">Portfolio Survival Score</span>                                                                                                                               
+                <div class="score-status">                                                                                                                                                              
+                    <span class="status-text">@GetSurvivalLabel(ActiveResult?.SurvivalScore ?? 100)</span>                                                                                              
+                    <span class="runway-pill">Runway: @(ActiveResult?.RunwayMonths ?? 0) Months</span>                                                                                                  
+                </div>                                                                                                                                                                                  
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <!-- Middle: Crisis Scenario Dropdown & Trigger -->                                                                                                                                             
+        <div class="scenario-section">                                                                                                                                                                  
+            <select class="scenario-select" value="@SelectedScenarioId" @onchange="OnScenarioChanged">                                                                                                  
+                @foreach (var scenario in Scenarios) {                                                                                                                                                                                       
+                    <option value="@scenario.Id">@scenario.Title</option>                                                                                                                               
+                }                                                                                                                                                                                       
+            </select>                                                                                                                                                                                   
+                                                                                                                                                                                                        
+            <button class="btn-stress-test" @onclick="OnRunSimulationClicked">                                                                                                                          
+                <span class="shield-icon">🛡️</span> Run Stress Test                                                                                                                                     
+            </button>                                                                                                                                                                                   
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <!-- Right: Risk Alerts Toggle -->                                                                                                                                                              
+        <div class="alerts-section">                                                                                                                                                                    
+            @if (ActiveResult?.RiskAlerts.Any() == true) {
+                <button class="btn-alerts-warning" @onclick="ToggleAlertsDrawer">                                                                                                                       
+                    <span class="pulse-indicator"></span>                                                                                                                                               
+                    <span>@ActiveResult.RiskAlerts.Count Risk Warnings</span>                                                                                                                           
+                </button>                                                                                                                                                                               
+            }                                                                                                                                                                                           
+            else {
+                <span class="resilient-badge">                                                                                                                                                          
+                    <span class="check-icon">✓</span> Resilient Portfolio                                                                                                                               
+                </span>                                                                                                                                                                                 
+            }                                                                                                                                                                                           
+        </div>                                                                                                                                                                                          
+    </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    <!-- Collapsible Risk Alerts Drawer -->                                                                                                                                                             
+    @if (_showDrawer && ActiveResult?.RiskAlerts.Any() == true) {
+        <div class="drawer-container">                                                                                                                                                                  
+            <div class="drawer-grid">                                                                                                                                                                   
+                <div class="drawer-card drawer-card-warning">                                                                                                                                           
+                    <h6 class="drawer-card-title warning-title">⚠️ Risk Warnings</h6>                                                                                                                   
+                    <ul class="drawer-list">                                                                                                                                                            
+                        @foreach (var alert in ActiveResult.RiskAlerts) {
+                            <li>@alert</li>                                                                                                                                                             
+                        }                                                                                                                                                                               
+                    </ul>                                                                                                                                                                               
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                <div class="drawer-card drawer-card-advice">                                                                                                                                            
+                    <h6 class="drawer-card-title advice-title">💡 AI Rebalancing Advice</h6>                                                                                                            
+                    <ul class="drawer-list">                                                                                                                                                            
+                        @foreach (var rec in ActiveResult.RecommendedValveAdjustments) {
+                            <li>@rec</li>                                                                                                                                                               
+                        }                                                                                                                                                                               
+                    </ul>                                                                                                                                                                               
+                </div>                                                                                                                                                                                  
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+    }                                                                                                                                                                                                   
+</div>

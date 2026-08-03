@@ -1,8 +1,8 @@
 namespace AssetRouter.Presentation.Components;
 
 using System.Globalization;
-using Microsoft.AspNetCore.Components;
 using AssetRouter.Core.Entities;
+using Microsoft.AspNetCore.Components;
 
 public partial class EmergencyFundAlert {
     [Parameter, EditorRequired]

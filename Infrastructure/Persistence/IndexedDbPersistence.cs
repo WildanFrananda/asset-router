@@ -1,7 +1,7 @@
 namespace AssetRouter.Infrastructure.Persistence;
 
-using Microsoft.JSInterop;
 using AssetRouter.Core.Interfaces;
+using Microsoft.JSInterop;
 
 public class IndexedDbPersistence(IJSRuntime js) : IDbPersistence {
     private const string DbFileName = "local_allocation.db";

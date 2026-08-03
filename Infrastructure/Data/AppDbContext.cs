@@ -1,8 +1,8 @@
 namespace AssetRouter.Infrastructure.Data;
 
-using Microsoft.EntityFrameworkCore;
 using AssetRouter.Core.Entities;
 using AssetRouter.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options, IDbPersistence persistence) : DbContext(options) {
     public DbSet<AllocationSnapshot> Snapshots { get; set; }

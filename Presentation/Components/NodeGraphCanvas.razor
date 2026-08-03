@@ -1,0 +1,116 @@
+@using AssetRouter.Core.Entities                                                                                                                                                                        
+                                                                                                                                                                                                            
+<div class="canvas-container"                                                                                                                                                                           
+        @onmousemove="HandleCanvasMouseMove"                                                                                                                                                               
+        @onmouseup="HandleCanvasMouseUp">                                                                                                                                                                  
+                                                                                                                                                                                                        
+    <!-- Background Sci-Fi Grid Overlay -->                                                                                                                                                             
+    <div class="canvas-grid-bg"></div>                                                                                                                                                                  
+                                                                                                                                                                                                        
+    <!-- SVG Layer for Pipe Connections & Animated Fluid Flow -->                                                                                                                                       
+    <svg class="canvas-svg-layer">                                                                                                                                                                      
+        <defs>                                                                                                                                                                                          
+            <!-- Flow Gradient Defs -->                                                                                                                                                                 
+            <linearGradient id="normalFlowGrad" x1="0%" y1="0%" x2="100%" y2="0%">                                                                                                                      
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8" />                                                                                                                            
+                <stop offset="100%" stop-color="#818cf8" stop-opacity="0.8" />                                                                                                                          
+            </linearGradient>                                                                                                                                                                           
+            <linearGradient id="overflowGrad" x1="0%" y1="0%" x2="100%" y2="0%">                                                                                                                        
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9" />                                                                                                                            
+                <stop offset="100%" stop-color="#ef4444" stop-opacity="0.9" />                                                                                                                          
+            </linearGradient>                                                                                                                                                                           
+        </defs>                                                                                                                                                                                         
+                                                                                                                                                                                                        
+        <!-- Income Node to Sub-Nodes Connections -->                                                                                                                                                   
+        @foreach (var node in Nodes) {
+            var pathD = GetCubicBezierPath(40 + 200, 180 + 70, node.X, node.Y + 70);                                                                                                                    
+            <path d="@pathD" class="svg-pipe-back" />                                                                                                                                                   
+            <path d="@pathD" class="svg-pipe-front normal-flow-anim" />                                                                                                                                 
+        }                                                                                                                                                                                               
+                                                                                                                                                                                                        
+        <!-- Overflow Valves Pipe Connections -->                                                                                                                                                       
+        @foreach (var valve in ActiveValves) {
+            var sourceNode = Nodes.FirstOrDefault(n => n.Id == valve.SourceNodeId);                                                                                                                     
+            var targetNode = Nodes.FirstOrDefault(n => n.Id == valve.TargetNodeId);                                                                                                                     
+            if (sourceNode != null && targetNode != null) {
+                var pathD = GetCubicBezierPath(sourceNode.X + 240, sourceNode.Y + 70, targetNode.X, targetNode.Y + 70);                                                                                 
+                <path d="@pathD" class="svg-pipe-overflow-back" />                                                                                                                                      
+                <path d="@pathD" class="svg-pipe-overflow-front overflow-anim" />                                                                                                                       
+            }                                                                                                                                                                                           
+        }                                                                                                                                                                                               
+    </svg>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    <!-- Node Cards Overlay Layer -->                                                                                                                                                                   
+    <div class="canvas-nodes-layer">                                                                                                                                                                    
+        <!-- 1. Master Income Node (Left Position) -->                                                                                                                                                  
+        <div class="node-card master-income-node" style="left: 40px; top: 180px;">                                                                                                                      
+            <div class="node-header">                                                                                                                                                                   
+                <span class="node-icon">💼</span>                                                                                                                                                       
+                <span class="node-title">Monthly Income In</span>                                                                                                                                       
+            </div>                                                                                                                                                                                      
+            <div class="node-body">                                                                                                                                                                     
+                <div class="salary-input-group">                                                                                                                                                        
+                    <span class="currency-prefix">Rp</span>                                                                                                                                             
+                    <input type="number"                                                                                                                                                                
+                            class="salary-input"                                                                                                                                                         
+                            value="@MonthlySalary"                                                                                                                                                       
+                            @onchange="OnSalaryInputChange"                                                                                                                                              
+                            step="500000" />                                                                                                                                                             
+                </div>                                                                                                                                                                                  
+                <div class="node-subtitle">Main Liquidity Source</div>                                                                                                                                  
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <!-- 2. Dynamic Bucket Nodes -->                                                                                                                                                                
+        @foreach (var node in Nodes) {
+            <div class="node-card @(node.IsCapReached ? "node-cap-reached" : "")"                                                                                                                       
+                    style="left: @(node.X)px; top: @(node.Y)px;"                                                                                                                                           
+                    @onmousedown="(e) => StartDraggingNode(e, node)">                                                                                                                                      
+                                                                                                                                                                                                        
+                <div class="node-header">                                                                                                                                                               
+                    <span class="node-category-badge badge-@node.Category.ToLower()">@node.Category</span>                                                                                              
+                    <span class="node-title">@node.Name</span>                                                                                                                                          
+                    <span class="drag-handle" title="Drag to Reposition">⋮⋮</span>                                                                                                                      
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                <div class="node-body">                                                                                                                                                                 
+                    <!-- Allocated Rupiah Amount -->                                                                                                                                                    
+                    <div class="allocated-amount-display">                                                                                                                                              
+                        @FormatCurrency(node.AllocatedAmount)                                                                                                                                           
+                    </div>                                                                                                                                                                              
+                                                                                                                                                                                                        
+                    <!-- Percentage Slider -->                                                                                                                                                          
+                    <div class="percentage-control">                                                                                                                                                    
+                        <input type="range"                                                                                                                                                             
+                                class="node-percent-slider"                                                                                                                                              
+                                min="0"                                                                                                                                                                  
+                                max="100"                                                                                                                                                                
+                                value="@node.Percentage"                                                                                                                                                 
+                                @oninput="(e) => OnNodePercentChange(e, node)" />                                                                                                                        
+                        <span class="percent-label">@node.Percentage%</span>                                                                                                                            
+                    </div>                                                                                                                                                                              
+                                                                                                                                                                                                        
+                    <!-- Tank Capacity Progress Bar -->                                                                                                                                                 
+                    @if (node.TargetCapAmount > 0) {
+                        <div class="tank-progress-wrapper">                                                                                                                                             
+                            <div class="tank-labels">                                                                                                                                                   
+                                <span>Cap Target</span>                                                                                                                                                 
+                                <span>@FormatCurrency(node.TargetCapAmount)</span>                                                                                                                      
+                            </div>                                                                                                                                                                      
+                            <div class="tank-track">                                                                                                                                                    
+                                <div class="tank-fill @(node.IsCapReached ? "tank-fill-overflow" : "")"                                                                                                 
+                                        style="width: @(node.FillPercentage)%;">                                                                                                                           
+                                </div>                                                                                                                                                                  
+                            </div>                                                                                                                                                                      
+                            @if (node.IsCapReached) {
+                                <div class="overflow-active-pill">                                                                                                                                      
+                                    🔥 Overflow Valve Active (+@FormatCurrency(node.AllocatedAmount - Math.Max(0, node.TargetCapAmount - node.CurrentAccumulatedAmount)))                               
+                                </div>                                                                                                                                                                  
+                            }                                                                                                                                                                           
+                        </div>                                                                                                                                                                          
+                    }                                                                                                                                                                                   
+                </div>                                                                                                                                                                                  
+            </div>                                                                                                                                                                                      
+        }                                                                                                                                                                                               
+    </div>                                                                                                                                                                                              
+</div>
