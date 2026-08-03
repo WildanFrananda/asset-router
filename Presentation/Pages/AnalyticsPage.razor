@@ -1,0 +1,124 @@
+@page "/analytics"                                                                                                                                                                                      
+                                                                                                                                                                                                            
+<div class="analytics-page">                                                                                                                                                                            
+    <!-- Header Title Section -->                                                                                                                                                                       
+    <header class="analytics-header">                                                                                                                                                                   
+        <div>                                                                                                                                                                                           
+            <h1 class="page-title">                                                                                                                                                                     
+                <span class="icon-glow">📈</span> Payday History & Discipline Analytics                                                                                                                 
+            </h1>                                                                                                                                                                                       
+            <p class="page-subtitle">                                                                                                                                                                   
+                Track your monthly allocation consistency, discipline streak, and historical wealth routing.                                                                                            
+            </p>                                                                                                                                                                                        
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="header-refresh">                                                                                                                                                                    
+            <button class="btn-refresh" @onclick="LoadDataAsync" disabled="@_isLoading">                                                                                                                
+                <span>🔄 Refresh Data</span>                                                                                                                                                            
+            </button>                                                                                                                                                                                   
+        </div>                                                                                                                                                                                          
+    </header>                                                                                                                                                                                           
+                                                                                                                                                                                                        
+    <!-- Top KPI Metrics Row -->                                                                                                                                                                        
+    <div class="analytics-kpi-grid">                                                                                                                                                                    
+        <!-- Streak Card -->                                                                                                                                                                            
+        <div class="kpi-card streak-card">                                                                                                                                                              
+            <div class="kpi-icon">🔥</div>                                                                                                                                                              
+            <div class="kpi-content">                                                                                                                                                                   
+                <span class="kpi-label">Discipline Streak</span>                                                                                                                                        
+                <span class="kpi-value">@DisciplineStreakMonths Months</span>                                                                                                                           
+                <span class="kpi-subtext">Consistent Payday Routing</span>                                                                                                                              
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <!-- Total Recorded Allocations -->                                                                                                                                                             
+        <div class="kpi-card">                                                                                                                                                                          
+            <div class="kpi-icon">💰</div>                                                                                                                                                              
+            <div class="kpi-content">                                                                                                                                                                   
+                <span class="kpi-label">Total Allocated Funds</span>                                                                                                                                    
+                <span class="kpi-value">@FormatCurrency(TotalAllocatedSalary)</span>                                                                                                                    
+                <span class="kpi-subtext">Across @HistorySnapshots.Count Monthly Paydays</span>                                                                                                         
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <!-- Average Monthly Salary -->                                                                                                                                                                 
+        <div class="kpi-card">                                                                                                                                                                          
+            <div class="kpi-icon">📊</div>                                                                                                                                                              
+            <div class="kpi-content">                                                                                                                                                                   
+                <span class="kpi-label">Avg. Monthly Income</span>                                                                                                                                      
+                <span class="kpi-value">@FormatCurrency(AverageSalary)</span>                                                                                                                           
+                <span class="kpi-subtext">Based on History Snapshots</span>                                                                                                                             
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+    </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    @if (_isLoading) {
+        <div class="loading-container">                                                                                                                                                                 
+            <div class="spinner-radar"></div>                                                                                                                                                           
+            <p>Loading allocation history & discipline data...</p>                                                                                                                                      
+        </div>                                                                                                                                                                                          
+    }                                                                                                                                                                                                   
+    else {
+        <div class="analytics-main-grid">                                                                                                                                                               
+            <!-- Left: Historical Trend Chart Card -->                                                                                                                                                  
+            <div class="chart-card">                                                                                                                                                                    
+                <div class="card-header">                                                                                                                                                               
+                    <h3 class="card-title">📊 Monthly Allocation Growth Trend</h3>                                                                                                                      
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                @if (HistorySnapshots.Any()) {
+                    <div class="bar-chart-container">                                                                                                                                                   
+                        @foreach (var snap in HistorySnapshots.TakeLast(6)) {
+                            var heightPct = MaxSalary > 0 ? (snap.Salary / MaxSalary) * 100 : 0;                                                                                                        
+                            <div class="bar-column">                                                                                                                                                    
+                                <div class="bar-value">@FormatShortCurrency(snap.Salary)</div>                                                                                                          
+                                <div class="bar-track">                                                                                                                                                 
+                                    <div class="bar-fill" style="height: @(heightPct)%;"></div>                                                                                                         
+                                </div>                                                                                                                                                                  
+                                <div class="bar-label">@snap.CreatedAt.ToLocalTime().ToString("MMM yy")</div>                                                                                           
+                            </div>                                                                                                                                                                      
+                        }                                                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                }                                                                                                                                                                                       
+                else {
+                    <div class="empty-chart-state">                                                                                                                                                     
+                        <p>No historical payday allocation records found yet. Submit your first allocation in the Command Center!</p>                                                                   
+                    </div>                                                                                                                                                                              
+                }                                                                                                                                                                                       
+            </div>                                                                                                                                                                                      
+                                                                                                                                                                                                        
+            <!-- Right: Payday History List -->                                                                                                                                                         
+            <div class="history-list-card">                                                                                                                                                             
+                <div class="card-header">                                                                                                                                                               
+                    <h3 class="card-title">📜 Payday Snapshot Log</h3>                                                                                                                                  
+                    <span class="card-count">@HistorySnapshots.Count Snapshots</span>                                                                                                                   
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                @if (HistorySnapshots.Any()) {
+                    <div class="snapshots-list">                                                                                                                                                        
+                        @foreach (var snap in HistorySnapshots.OrderByDescending(s => s.CreatedAt)) {
+                            <div class="snapshot-item">                                                                                                                                                 
+                                <div class="snapshot-header">                                                                                                                                           
+                                    <span class="snapshot-date">📅 @snap.CreatedAt.ToLocalTime().ToString("dd MMM yyyy • HH:mm")</span>                                                                 
+                                    <span class="snapshot-salary">@FormatCurrency(snap.Salary)</span>                                                                                                   
+                                </div>                                                                                                                                                                  
+                                <div class="snapshot-items-pills">                                                                                                                                      
+                                    @foreach (var item in snap.Items) {
+                                        <span class="item-pill">                                                                                                                                        
+                                            @item.Category: <strong>@item.Percentage%</strong> (@FormatShortCurrency(item.Amount))                                                                      
+                                        </span>                                                                                                                                                         
+                                    }                                                                                                                                                                   
+                                </div>                                                                                                                                                                  
+                            </div>                                                                                                                                                                      
+                        }                                                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                }                                                                                                                                                                                       
+                else {
+                    <div class="empty-history-state">                                                                                                                                                   
+                        <p>History log is currently empty.</p>                                                                                                                                          
+                    </div>                                                                                                                                                                              
+                }                                                                                                                                                                                       
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+    }                                                                                                                                                                                                   
+</div>

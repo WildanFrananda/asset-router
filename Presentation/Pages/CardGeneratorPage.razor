@@ -1,0 +1,135 @@
+@page "/card-generator"                                                                                                                                                                                 
+                                                                                                                                                                                                            
+<div class="card-gen-page">                                                                                                                                                                             
+    <!-- Header Title Section -->                                                                                                                                                                       
+    <header class="card-gen-header">                                                                                                                                                                    
+        <div>                                                                                                                                                                                           
+            <h1 class="page-title">                                                                                                                                                                     
+                <span class="icon-glow">🎨</span> Proof of Discipline Social Card                                                                                                                       
+            </h1>                                                                                                                                                                                       
+            <p class="page-subtitle">                                                                                                                                                                   
+                Generate shareable, aesthetic infographic cards of your payday allocation strategy (Privacy-first: No raw numbers displayed).                                                           
+            </p>                                                                                                                                                                                        
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="header-actions">                                                                                                                                                                    
+            <button class="btn-copy-summary" @onclick="CopySummaryToClipboard">                                                                                                                         
+                <span>📋 Copy Text Summary</span>                                                                                                                                                       
+            </button>                                                                                                                                                                                   
+        </div>                                                                                                                                                                                          
+    </header>                                                                                                                                                                                           
+                                                                                                                                                                                                        
+    <div class="card-gen-layout">                                                                                                                                                                       
+        <!-- Left: Customization Controls Panel -->                                                                                                                                                     
+        <div class="controls-card">                                                                                                                                                                     
+            <h3 class="panel-title">⚙️ Card Customization</h3>                                                                                                                                          
+                                                                                                                                                                                                        
+            <div class="control-group">                                                                                                                                                                 
+                <label class="control-label">Card Theme</label>                                                                                                                                         
+                <div class="theme-picker">                                                                                                                                                              
+                    <button class="theme-btn theme-cyber @(SelectedTheme == "cyber" ? "active-theme" : "")"                                                                                             
+                            @onclick='() => SelectTheme("cyber")'>                                                                                                                                      
+                        Cyber Neon                                                                                                                                                                      
+                    </button>                                                                                                                                                                           
+                    <button class="theme-btn theme-gold @(SelectedTheme == "gold" ? "active-theme" : "")"                                                                                               
+                            @onclick='() => SelectTheme("gold")'>                                                                                                                                       
+                        Golden Empire                                                                                                                                                                   
+                    </button>                                                                                                                                                                           
+                    <button class="theme-btn theme-emerald @(SelectedTheme == "emerald" ? "active-theme" : "")"                                                                                         
+                            @onclick='() => SelectTheme("emerald")'>                                                                                                                                    
+                        Emerald Shield                                                                                                                                                                  
+                    </button>                                                                                                                                                                           
+                    <button class="theme-btn theme-obsidian @(SelectedTheme == "obsidian" ? "active-theme" : "")"                                                                                       
+                            @onclick='() => SelectTheme("obsidian")'>                                                                                                                                   
+                        Obsidian Dark                                                                                                                                                                   
+                    </button>                                                                                                                                                                           
+                </div>                                                                                                                                                                                  
+            </div>                                                                                                                                                                                      
+                                                                                                                                                                                                        
+            <div class="control-group">                                                                                                                                                                 
+                <label class="control-label">Display User Tag</label>                                                                                                                                   
+                <input type="text" class="text-input" @bind="UserTag" placeholder="e.g. @@discipline_warrior" />                                                                                         
+            </div>                                                                                                                                                                                      
+                                                                                                                                                                                                        
+            <div class="control-group">                                                                                                                                                                 
+                <label class="control-label">Custom Tagline</label>                                                                                                                                     
+                <input type="text" class="text-input" @bind="CustomTagline" placeholder="e.g. Allocate first, spend later!" />                                                                          
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <!-- Right: Live Aesthetic Card Preview -->                                                                                                                                                     
+        <div class="preview-section">                                                                                                                                                                   
+            <div class="social-card-preview theme-@SelectedTheme">                                                                                                                                      
+                <!-- Card Branding Header -->                                                                                                                                                           
+                <div class="card-brand-header">                                                                                                                                                         
+                    <div class="brand-info">                                                                                                                                                            
+                        <span class="brand-icon">🌌</span>                                                                                                                                              
+                        <span class="brand-text">AssetRouter</span>                                                                                                                                     
+                    </div>                                                                                                                                                                              
+                    <span class="privacy-badge">PROVED DISCIPLINE</span>                                                                                                                                
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                <!-- User Tagline -->                                                                                                                                                                   
+                <div class="user-profile-header">                                                                                                                                                       
+                    <h3 class="user-handle">@UserTag</h3>                                                                                                                                               
+                    <p class="user-tagline">"@CustomTagline"</p>                                                                                                                                        
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                <!-- Allocation Percentages Breakdown Grid -->                                                                                                                                          
+                <div class="card-breakdown-grid">                                                                                                                                                       
+                    <div class="breakdown-item">                                                                                                                                                        
+                        <span class="item-name">Emergency Fund</span>                                                                                                                                   
+                        <span class="item-bar"><span style="width: 20%;"></span></span>                                                                                                                 
+                        <span class="item-pct">20%</span>                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                    <div class="breakdown-item">                                                                                                                                                        
+                        <span class="item-name">Living Expenses</span>                                                                                                                                  
+                        <span class="item-bar"><span style="width: 35%;"></span></span>                                                                                                                 
+                        <span class="item-pct">35%</span>                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                    <div class="breakdown-item">                                                                                                                                                        
+                        <span class="item-name">Fundamental Stocks</span>                                                                                                                               
+                        <span class="item-bar"><span style="width: 20%;"></span></span>                                                                                                                 
+                        <span class="item-pct">20%</span>                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                    <div class="breakdown-item">                                                                                                                                                        
+                        <span class="item-name">Gold Hedging</span>                                                                                                                                     
+                        <span class="item-bar"><span style="width: 15%;"></span></span>                                                                                                                 
+                        <span class="item-pct">15%</span>                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                    <div class="breakdown-item">                                                                                                                                                        
+                        <span class="item-name">Crypto Assets</span>                                                                                                                                    
+                        <span class="item-bar"><span style="width: 10%;"></span></span>                                                                                                                 
+                        <span class="item-pct">10%</span>                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                <!-- Badges Footer -->                                                                                                                                                                  
+                <div class="card-badges-footer">                                                                                                                                                        
+                    <div class="badge-item">                                                                                                                                                            
+                        <span class="badge-icon">🔥</span>                                                                                                                                              
+                        <span>3-Month Streak</span>                                                                                                                                                     
+                    </div>                                                                                                                                                                              
+                    <div class="badge-item">                                                                                                                                                            
+                        <span class="badge-icon">🛡️</span>                                                                                                                                              
+                        <span>94/100 Survival Score</span>                                                                                                                                              
+                    </div>                                                                                                                                                                              
+                    <div class="badge-item">                                                                                                                                                            
+                        <span class="badge-icon">🌊</span>                                                                                                                                              
+                        <span>Auto-Overflow Active</span>                                                                                                                                               
+                    </div>                                                                                                                                                                              
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                <div class="card-watermark">                                                                                                                                                            
+                    assetrouter.app • Payday Asset Router                                                                                                                                               
+                </div>                                                                                                                                                                                  
+            </div>                                                                                                                                                                                      
+                                                                                                                                                                                                        
+            @if (_copiedToast) {
+                <div class="toast-notification">                                                                                                                                                        
+                    ✓ Summary text copied to clipboard! Ready to share.                                                                                                                                 
+                </div>                                                                                                                                                                                  
+            }                                                                                                                                                                                           
+        </div>                                                                                                                                                                                          
+    </div>                                                                                                                                                                                              
+</div>

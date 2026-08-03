@@ -1,0 +1,308 @@
+/* Layout Page */
+.card-gen-page {
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #030712;
+    color: #f9fafb;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Header */
+.card-gen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 0.25rem 0;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.icon-glow {
+    filter: drop-shadow(0 0 8px #38bdf8);
+}
+
+.page-subtitle {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #9ca3af;
+}
+
+.btn-copy-summary {
+    padding: 0.55rem 1.1rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, #0284c7, #2563eb);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-copy-summary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
+}
+
+/* Grid Layout */
+.card-gen-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .card-gen-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Controls Card */
+.controls-card {
+    padding: 1.25rem;
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem 0;
+}
+
+.control-group {
+    margin-bottom: 1.25rem;
+}
+
+.control-label {
+    display: block;
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    margin-bottom: 0.4rem;
+}
+
+.theme-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.theme-btn {
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.active-theme {
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+    background: rgba(56, 189, 248, 0.15) !important;
+    font-weight: 700;
+}
+
+.text-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: #0f172a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.85rem;
+    outline: none;
+}
+
+/* Card Preview Section */
+.preview-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-card-preview {
+    width: 100%;
+    max-width: 480px;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    font-family: system-ui, -apple-system, sans-serif;
+    transition: all 0.3s ease;
+}
+
+/* Theme Variances */
+.theme-cyber {
+    background: linear-gradient(145deg, #090d16, #0f172a);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+}
+
+.theme-gold {
+    background: linear-gradient(145deg, #1c1917, #292524);
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    box-shadow: 0 0 30px rgba(234, 179, 8, 0.2);
+}
+
+.theme-emerald {
+    background: linear-gradient(145deg, #064e3b, #022c22);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+}
+
+.theme-obsidian {
+    background: linear-gradient(145deg, #111827, #000000);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Card Internal Layout */
+.card-brand-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.brand-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.privacy-badge {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.3rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    font-weight: 700;
+}
+
+.user-profile-header {
+    margin-bottom: 1.5rem;
+}
+
+.user-handle {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 0.25rem 0;
+    color: #ffffff;
+}
+
+.user-tagline {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.card-breakdown-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+}
+
+.breakdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.item-name {
+    width: 130px;
+    color: #cbd5e1;
+}
+
+.item-bar {
+    flex-grow: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.item-bar span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    border-radius: 4px;
+}
+
+.item-pct {
+    width: 36px;
+    text-align: right;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.card-badges-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.badge-item {
+    font-size: 0.725rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.card-watermark {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #64748b;
+    letter-spacing: 0.05em;
+}
+
+.toast-notification {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34d399;
+    font-size: 0.8rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

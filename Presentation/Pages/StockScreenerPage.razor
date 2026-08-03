@@ -1,0 +1,145 @@
+@page "/screener"                                                                                                                                                                                       
+                                                                                                                                                                                                            
+<div class="screener-page">                                                                                                                                                                             
+    <!-- Header Title Section -->                                                                                                                                                                       
+    <header class="screener-header">                                                                                                                                                                    
+        <div>                                                                                                                                                                                           
+            <h1 class="page-title">                                                                                                                                                                     
+                <span class="icon-glow">🔍</span> Fundamental Stock Screener & Asset Radar                                                                                                              
+            </h1>                                                                                                                                                                                       
+            <p class="page-subtitle">                                                                                                                                                                   
+                Screening high-quality stocks based on fundamental metrics (Low PE, Healthy Debt, High ROE).                                                                                            
+            </p>                                                                                                                                                                                        
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="header-badges">                                                                                                                                                                     
+            <span class="candidate-count-badge">                                                                                                                                                        
+                Candidates Found: <strong>@FilteredCandidates.Count</strong>                                                                                                                            
+            </span>                                                                                                                                                                                     
+        </div>                                                                                                                                                                                          
+    </header>                                                                                                                                                                                           
+                                                                                                                                                                                                        
+    <!-- Top Filter Controls Bar -->                                                                                                                                                                    
+    <div class="screener-filter-bar">                                                                                                                                                                   
+        <div class="filter-group">                                                                                                                                                                      
+            <label class="filter-label">Sector Filter</label>                                                                                                                                           
+            <select class="filter-select" value="@SelectedSector" @onchange="OnSectorChanged">                                                                                                          
+                <option value="All">All Sectors</option>                                                                                                                                                
+                @foreach (var sector in AvailableSectors) {
+                    <option value="@sector">@sector</option>                                                                                                                                            
+                }                                                                                                                                                                                       
+            </select>                                                                                                                                                                                   
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="filter-group">                                                                                                                                                                      
+            <label class="filter-label">Max P/E Ratio: <strong>@MaxPE.ToString("N1")x</strong></label>                                                                                                  
+            <input type="range" class="filter-slider" min="5" max="30" step="0.5" value="@MaxPE" @oninput="OnMaxPEInput" />                                                                             
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="filter-group">                                                                                                                                                                      
+            <label class="filter-label">Max Debt/Equity (DER): <strong>@MaxDER.ToString("N2")x</strong></label>                                                                                         
+            <input type="range" class="filter-slider" min="0.1" max="2.5" step="0.05" value="@MaxDER" @oninput="OnMaxDERInput" />                                                                       
+        </div>                                                                                                                                                                                          
+                                                                                                                                                                                                        
+        <div class="filter-group">                                                                                                                                                                      
+            <label class="filter-label">Min Return on Equity (ROE): <strong>@MinROE.ToString("N0")%</strong></label>                                                                                    
+            <input type="range" class="filter-slider" min="5" max="40" step="1" value="@MinROE" @oninput="OnMinROEInput" />                                                                             
+        </div>                                                                                                                                                                                          
+    </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    @if (_isLoading) {
+        <div class="loading-container">                                                                                                                                                                 
+            <div class="spinner-radar"></div>                                                                                                                                                           
+            <p>Screening stock market candidates...</p>                                                                                                                                                 
+        </div>                                                                                                                                                                                          
+    }                                                                                                                                                                                                   
+    else {
+        <!-- Radar Visualizer & Selected Candidate Inspector -->                                                                                                                                        
+        <div class="screener-content-grid">                                                                                                                                                             
+            <!-- Left: Radar / Spider Health Score Visualizer -->                                                                                                                                       
+            <div class="radar-card">                                                                                                                                                                    
+                <div class="card-header">                                                                                                                                                               
+                    <h3 class="card-title">📡 Fundamental Health Radar</h3>                                                                                                                             
+                    <span class="card-badge">Selected: @(SelectedCandidate?.Ticker ?? "None")</span>                                                                                                    
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                @if (SelectedCandidate != null) {
+                    <div class="radar-visualization">                                                                                                                                                   
+                        <svg class="radar-svg" viewBox="0 0 300 240">                                                                                                                                   
+                            <!-- Polygon Grid -->                                                                                                                                                       
+                            <polygon points="150,30 250,90 220,200 80,200 50,90" class="radar-grid-shape" />                                                                                            
+                            <polygon points="150,60 210,100 190,170 110,170 90,100" class="radar-grid-shape-inner" />                                                                                   
+                                                                                                                                                                                                        
+                            <!-- Candidate Shape -->                                                                                                                                                    
+                            <polygon points="@GetRadarPoints(SelectedCandidate)" class="radar-data-shape" />                                                                                            
+                                                                                                                                                                                                        
+                            <!-- Radar Axis Labels -->                                                                                                                                                  
+                            <text x="150" y="20" class="radar-label">P/E Ratio</text>                                                                                                                   
+                            <text x="255" y="95" class="radar-label">ROE</text>                                                                                                                         
+                            <text x="215" y="215" class="radar-label">Div Yield</text>                                                                                                                  
+                            <text x="45" y="215" class="radar-label">DER</text>                                                                                                                         
+                            <text x="20" y="95" class="radar-label">Safety</text>                                                                                                                       
+                        </svg>                                                                                                                                                                          
+                                                                                                                                                                                                        
+                        <div class="candidate-summary">                                                                                                                                                 
+                            <h4>@SelectedCandidate.Name (@SelectedCandidate.Ticker)</h4>                                                                                                                
+                            <p>Sector: <strong>@SelectedCandidate.Sector</strong></p>                                                                                                                   
+                            <div class="metrics-pills">                                                                                                                                                 
+                                <span class="pill">P/E: @SelectedCandidate.PriceToEarnings.ToString("N1")x</span>                                                                                       
+                                <span class="pill">DER: @SelectedCandidate.DebtToEquity.ToString("N2")x</span>                                                                                          
+                                <span class="pill pill-success">ROE: @SelectedCandidate.ReturnOnEquity.ToString("N1")%</span>                                                                           
+                                <span class="pill pill-info">Div: @SelectedCandidate.DividendYield.ToString("N1")%</span>                                                                               
+                            </div>                                                                                                                                                                      
+                        </div>                                                                                                                                                                          
+                    </div>                                                                                                                                                                              
+                }                                                                                                                                                                                       
+                else {
+                    <div class="empty-radar-state">                                                                                                                                                     
+                        <p>Select a stock from the candidate list to inspect fundamental radar.</p>                                                                                                     
+                    </div>                                                                                                                                                                              
+                }                                                                                                                                                                                       
+            </div>                                                                                                                                                                                      
+                                                                                                                                                                                                        
+            <!-- Right: Candidate Stock Table & List -->                                                                                                                                                
+            <div class="candidates-table-card">                                                                                                                                                         
+                <div class="card-header">                                                                                                                                                               
+                    <h3 class="card-title">🏆 Qualified Candidates List</h3>                                                                                                                            
+                </div>                                                                                                                                                                                  
+                                                                                                                                                                                                        
+                <div class="table-responsive">                                                                                                                                                          
+                    <table class="screener-table">                                                                                                                                                      
+                        <thead>                                                                                                                                                                         
+                            <tr>                                                                                                                                                                        
+                                <th>Ticker</th>                                                                                                                                                         
+                                <th>Name</th>                                                                                                                                                           
+                                <th>Sector</th>                                                                                                                                                         
+                                <th>P/E</th>                                                                                                                                                            
+                                <th>DER</th>                                                                                                                                                            
+                                <th>ROE</th>                                                                                                                                                            
+                                <th>Div Yield</th>                                                                                                                                                      
+                                <th>Action</th>                                                                                                                                                         
+                            </tr>                                                                                                                                                                       
+                        </thead>                                                                                                                                                                        
+                        <tbody>                                                                                                                                                                         
+                            @foreach (var stock in FilteredCandidates) {
+                                <tr class="@(stock.Ticker == SelectedCandidate?.Ticker ? "row-selected" : "")"                                                                                          
+                                    @onclick="() => SelectCandidate(stock)">                                                                                                                            
+                                    <td class="ticker-cell">@stock.Ticker</td>                                                                                                                          
+                                    <td>@stock.Name</td>                                                                                                                                                
+                                    <td><span class="sector-tag">@stock.Sector</span></td>                                                                                                              
+                                    <td>@stock.PriceToEarnings.ToString("N1")x</td>                                                                                                                     
+                                    <td>@stock.DebtToEquity.ToString("N2")</td>                                                                                                                         
+                                    <td class="roe-cell">+@stock.ReturnOnEquity.ToString("N1")%</td>                                                                                                    
+                                    <td>@stock.DividendYield.ToString("N1")%</td>                                                                                                                       
+                                    <td>                                                                                                                                                                
+                                        <button class="btn-inspect">Inspect</button>                                                                                                                    
+                                    </td>                                                                                                                                                               
+                                </tr>                                                                                                                                                                   
+                            }                                                                                                                                                                           
+                        </tbody>                                                                                                                                                                        
+                    </table>                                                                                                                                                                            
+                </div>                                                                                                                                                                                  
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+    }                                                                                                                                                                                                   
+</div>
