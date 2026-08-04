@@ -1,6 +1,6 @@
 # PRD: Smart Salary & Asset Allocation Router (Sci-Fi Financial Command Center)
 
-**Versi Dokumen:** 2.3  
+**Versi Dokumen:** 2.4  
 **Tanggal:** 4 Agustus 2026  
 **Status:** Active — Production Master Architecture  
 **Tech Stack:** C# + .NET 10 + Blazor WebAssembly + Interactive Canvas, Pure Vanilla CSS  
@@ -119,7 +119,7 @@ Analogi utama: Aplikasi ini berfungsi seperti **router jaringan pintar**, tetapi
   /Application (Interfaces, DTOs, Services)
   /Infrastructure (Local Persistence, Repositories, Live Stock Data Providers)
   /Presentation
-    /Components (TopCrisisBar, BottomTimelineSlider, NodeGraphCanvas, dll.)
+    /Components (TopCrisisBar, BottomTimelineSlider, NodeGraphCanvas, CyberneticCoreReactor)
     /Pages (CommandCenter, StockScreenerPage, AnalyticsPage, CardGeneratorPage)
     /Pages/Layout (MainLayout)
   /wwwroot
@@ -128,4 +128,23 @@ Analogi utama: Aplikasi ini berfungsi seperti **router jaringan pintar**, tetapi
 
 ---
 
-*Dokumen PRD ini adalah acuan resmi arsitektur produk AssetRouter v2.3.*
+## 7. User Retention Risk Analysis & Future Roadmap Backlog (v3.0 Roadmap)
+
+Analisis komprehensif mengenai **10 potensi hambatan adopsi pengguna** beserta rencana fitur mitigasi untuk iterasi pengembangan versi berikutnya (PR v3.0):
+
+| No | Hambatan Adopsi / Alasan User Berhenti | Dampak & Risiko | Solusi Mitigasi & Roadmap v3.0 |
+|---|---|---|---|
+| 1 | **Kurva Pembelajaran Tinggi untuk Awam** | User awam bingung dengan istilah *Node Routing/Overflow*. | Sediakan **Interactive Onboarding Wizard & "Simple 50-30-20 View" Toggle**. |
+| 2 | **Tidak Ada Eksekusi Otomatis Transaksi Bank** | User harus transfer manual 5x ke tiap rekening/broker. | Sediakan **Deep-Link Auto-Fill & Export Format CSV/Qris Routing**. |
+| 3 | **Mobile Canvas View Terlalu Sempit** | Kurang nyaman di layar HP kecil (<400px). | Bangun **Mobile-Optimized Vertical Card Flow View** sebagai fallback. |
+| 4 | **Input Manual Mengundang Payday Fatigue** | User malas menginput persentase & gaji tiap bulan. | Integrasikan **WhatsApp / Telegram Payday Bot Reminder** & OCR Slip Gaji. |
+| 5 | **Beban Emosional Status "Meltdown"** | User yang keuangan sulit merasa dihakimi/anxious. | Ganti istilah alarm menjadi **Empathetic AI Financial Health Guidance**. |
+| 6 | **Waktu Cold Start Blazor WASM Initial Load** | Delay beberapa detik saat download runtime WASM. | Terapkan **Lazy Loading Assemblies & Service Worker Caching**. |
+| 7 | **Dianggap Over-Engineered Dibandingkan Sheet** | User merasa spreadsheet lebih cepat & simpel. | Sediakan **Quick Express Allocation Preset (1-Click Route)**. |
+| 8 | **Risiko Kehilangan Data di IndexedDB Browser** | Data hilang jika user hapus cache/ganti device. | Tambahkan **Encrypted JSON Export/Import & Optional Cloud Sync**. |
+| 9 | **Tidak Ada Notifikasi Pengingat Gajian** | User lupa membuka aplikasi setelah bulan ke-2. | Tambahkan **PWA Web Push Notification API Support**. |
+| 10 | **Terbatas Hanya pada Saham IDX (IDR)** | Investor saham US / Crypto tidak terakomodasi. | Tambahkan **Multi-Currency (USD/SGD) & Global Asset Data Provider**. |
+
+---
+
+*Dokumen PRD ini adalah acuan resmi arsitektur produk AssetRouter v2.4.*

@@ -1,144 +1,156 @@
-.command-center-page {
-    padding: 1.5rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #030712;
-    min-height: 100vh;
-    color: #f9fafb;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-/* Header Section */
-.command-center-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.page-title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    margin: 0 0 0.25rem 0;
+.btn-execute-payday {
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #059669 0%, #10b981 50%, #047857 100%);
     color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(52, 211, 153, 0.6);
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+    transition: all 0.25 ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.glowing-icon {
-    filter: drop-shadow(0 0 8px #38bdf8);
+.btn-execute-payday:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
-.page-subtitle {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #9ca3af;
-}
-
-/* Actions & Validation Badges */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.total-percent-indicator {
-    padding: 0.45rem 0.9rem;
-    border-radius: 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.valid-percent {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.4);
-    color: #34d399;
-}
-
-.invalid-percent {
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    color: #fca5a5;
-    animation: shake 0.4s ease-in-out;
-}
-
-.warning-tooltip {
-    font-size: 0.75rem;
-    margin-left: 0.3rem;
-}
-
-.btn-save-layout {
-    padding: 0.55rem 1.1rem;
-    border-radius: 0.5rem;
-    background: linear-gradient(135deg, #0284c7, #2563eb);
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 0.85rem;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.btn-save-layout:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
-}
-
-.btn-save-layout:disabled {
-    opacity: 0.6;
+.btn-execute-payday:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
+    box-shadow: none;
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Loading State */
-.loading-state {
+/* Modal Overlay Backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(3, 7, 18, 0.85);
+    backdrop-filter: blur(16px);
+    z-index: 9999;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 5rem 1rem;
-    color: #9ca3af;
+    padding: 1.5rem;
 }
 
-.radar-spinner {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 3px solid rgba(56, 189, 248, 0.2);
-    border-top-color: #38bdf8;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
+/* Futuristic Payday Modal Card */
+.payday-modal-card {
+    background: linear-gradient(145deg, #0f172a 0%, #030712 100%);
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 50px rgba(16, 185, 129, 0.25), inset 0 0 20px rgba(16, 185, 129, 0.1);
+    border-radius: 20px;
+    padding: 2.25rem 2rem;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    color: #f8fafc;
+    animation: modal-pop-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
+@keyframes modal-pop-in {
+    0% {
+        transform: scale(0.85);
+        opacity: 0;
     }
-}
 
-@keyframes shake {
-
-    0%,
     100% {
-        transform: translateX(0);
+        transform: scale(1);
+        opacity: 1;
     }
+}
 
-    25% {
-        transform: translateX(-4px);
-    }
+.modal-glow-header .modal-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.8));
+}
 
-    75% {
-        transform: translateX(4px);
-    }
+.modal-glow-header h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    background: linear-gradient(90deg, #34d399, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.modal-glow-header p {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.modal-body-stats {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.75rem 0;
+}
+
+.stat-pill {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.pill-label {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pill-val {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.text-cyan {
+    color: #38bdf8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.text-emerald {
+    color: #34d399;
+    text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+}
+
+.btn-modal-close {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.85rem 1.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-modal-close:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
 }

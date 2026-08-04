@@ -1,5 +1,6 @@
 @page "/command-center"                                                                                                                                                                                 
 @page "/"                                                                                                                                                                                               
+@using AssetRouter.Presentation.Components                                                                                                                                                              
                                                                                                                                                                                                         
 <div class="command-center-page">                                                                                                                                                                       
     <!-- Header Title & Control Action Bar -->                                                                                                                                                          
@@ -13,24 +14,34 @@
             </p>                                                                                                                                                                                        
         </div>                                                                                                                                                                                          
                                                                                                                                                                                                         
+        <!-- Cyber Core Reactor Status Unit -->                                                                                                                                                         
+        @if (!_isLoading) {                                                                                                                                                                             
+            <CyberneticCoreReactor Nodes="@State.CurrentNodes" MonthlySalary="@State.MonthlySalary" GratificationToast="@_gratificationToast" />                                                        
+        }                                                                                                                                                                                               
+                                                                                                                                                                                                        
         <div class="header-actions">                                                                                                                                                                    
             <!-- Percentage Validation Indicator -->                                                                                                                                                    
             <div class="total-percent-indicator @(IsPercentageValid ? "valid-percent" : "invalid-percent")">                                                                                            
                 <span>Total Allocation:</span>                                                                                                                                                          
                 <strong>@TotalAllocationPercent%</strong>                                                                                                                                               
-                @if (!IsPercentageValid) {
+                @if (!IsPercentageValid) {                                                                                                                                                              
                     <span class="warning-tooltip" title="Total allocation must equal 100%">⚠️ Fix Total</span>                                                                                          
                 }                                                                                                                                                                                       
             </div>                                                                                                                                                                                      
                                                                                                                                                                                                         
+            <!-- Execute Payday Protocol Button -->                                                                                                                                                     
+            <button class="btn-execute-payday" @onclick="ExecutePaydayProtocolAsync" disabled="@(_isSaving || !IsPercentageValid)">                                                                     
+                <span>🚀 EXECUTE PAYDAY PROTOCOL</span>                                                                                                                                                 
+            </button>                                                                                                                                                                                   
+                                                                                                                                                                                                        
             <!-- Save Layout Button -->                                                                                                                                                                 
             <button class="btn-save-layout" @onclick="SaveLayoutAsync" disabled="@_isSaving">                                                                                                           
-                @if (_isSaving) {
+                @if (_isSaving) {                                                                                                                                                                       
                     <span class="spinner"></span>                                                                                                                                                       
                     <span>Saving...</span>                                                                                                                                                              
                 }                                                                                                                                                                                       
-                else {
-                    <span>💾 Save Node Configuration</span>                                                                                                                                             
+                else {                                                                                                                                                                                  
+                    <span>💾 Save Config</span>                                                                                                                                                         
                 }                                                                                                                                                                                       
             </button>                                                                                                                                                                                   
         </div>                                                                                                                                                                                          
@@ -63,5 +74,31 @@
             SelectedYear="@_selectedYear"                                                                                                                                                               
             OnUniverseSelected="HandleUniverseSelected"                                                                                                                                                 
             OnYearSelected="HandleYearSelected" />                                                                                                                                                      
+    }                                                                                                                                                                                                   
+                                                                                                                                                                                                        
+    <!-- Payday Mission Accomplished Modal -->                                                                                                                                                          
+    @if (_showPaydaySuccessModal) {                                                                                                                                                                     
+        <div class="modal-backdrop">                                                                                                                                                                    
+            <div class="payday-modal-card">                                                                                                                                                             
+                <div class="modal-glow-header">                                                                                                                                                         
+                    <span class="modal-icon">🎉</span>                                                                                                                                                  
+                    <h2>PAYDAY PROTOCOL EXECUTED!</h2>                                                                                                                                                  
+                    <p>Your monthly salary has been autonomously routed across all investment tanks.</p>                                                                                                
+                </div>                                                                                                                                                                                  
+                <div class="modal-body-stats">                                                                                                                                                          
+                    <div class="stat-pill">                                                                                                                                                             
+                        <span class="pill-label">Survival Score</span>                                                                                                                                  
+                        <strong class="pill-val text-cyan">@(State.ActiveStressTestResult?.SurvivalScore ?? 100)/100</strong>                                                                           
+                    </div>                                                                                                                                                                              
+                    <div class="stat-pill">                                                                                                                                                             
+                        <span class="pill-label">Active Overflow Valves</span>                                                                                                                          
+                        <strong class="pill-val text-emerald">@(State.OverflowResult?.ActiveValves.Count ?? 0) Active</strong>                                                                          
+                    </div>                                                                                                                                                                              
+                </div>                                                                                                                                                                                  
+                <button class="btn-modal-close" @onclick="ClosePaydayModal">                                                                                                                            
+                    ⚡ Continue to Command Center                                                                                                                                                       
+                </button>                                                                                                                                                                               
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
     }                                                                                                                                                                                                   
 </div>

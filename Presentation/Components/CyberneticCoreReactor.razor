@@ -1,0 +1,27 @@
+@namespace AssetRouter.Presentation.Components                                                                                                                                                          
+                                                                                                                                                                                                            
+<div class="cyber-reactor-container state-@CoreState">                                                                                                                                                  
+    <!-- Rotating Hologram Ring -->                                                                                                                                                                     
+    <div class="reactor-outer-ring"></div>                                                                                                                                                              
+                                                                                                                                                                                                        
+    <!-- Central Core Sphere -->                                                                                                                                                                        
+    <div class="reactor-core-sphere">                                                                                                                                                                   
+        <span class="core-icon">@StateIcon</span>                                                                                                                                                       
+        <span class="core-power-pct">@PowerPercentage%</span>                                                                                                                                           
+    </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    <!-- Status Text & Time Travel Gratification Floating Banner -->                                                                                                                                    
+    <div class="reactor-info">                                                                                                                                                                          
+        <div class="reactor-status-badge">                                                                                                                                                              
+            <span class="status-dot"></span>                                                                                                                                                            
+            <span class="status-title">@StateTitle</span>                                                                                                                                               
+        </div>                                                                                                                                                                                          
+        <div class="reactor-subtext">@StateSubtext</div>                                                                                                                                                
+                                                                                                                                                                                                        
+        @if (!string.IsNullOrEmpty(GratificationToast)) {                                                                                                                                               
+            <div class="time-travel-toast">                                                                                                                                                             
+                <span class="toast-flash">⚡</span> @GratificationToast                                                                                                                                 
+            </div>                                                                                                                                                                                      
+        }                                                                                                                                                                                               
+    </div>                                                                                                                                                                                              
+</div>
