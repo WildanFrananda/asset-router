@@ -1,9 +1,9 @@
 # PRD: Smart Salary & Asset Allocation Router (Sci-Fi Financial Command Center)
 
-**Versi Dokumen:** 2.1  
-**Tanggal:** 3 Agustus 2026  
+**Versi Dokumen:** 2.3  
+**Tanggal:** 4 Agustus 2026  
 **Status:** Active — Production Master Architecture  
-**Tech Stack:** C# + .NET 10 + Blazor WebAssembly + Interactive Canvas & Pure Vanilla CSS  
+**Tech Stack:** C# + .NET 10 + Blazor WebAssembly + Interactive Canvas, Pure Vanilla CSS  
 
 ---
 
@@ -25,7 +25,7 @@ Analogi utama: Aplikasi ini berfungsi seperti **router jaringan pintar**, tetapi
   - **Income Node (Input):** Node sumber rupiah utama (`[Gaji / Income In]`).
   - **Routing Pipes (Garis Hubung):** Pipa dengan efek animasi partikel arus uang (*animated particle flow*).
   - **Bucket Nodes (Tujuan):** Node tujuan alokasi (`[Dana Darurat]`, `[Emas]`, `[Saham Fundamental]`, `[Kripto/Risk]`, `[Kebutuhan]`).
-- **Interaktivitas:** Drag-and-drop node positioning, penyesuaian slider persentase real-time.
+- **Interaktivitas:** Drag-and-drop node positioning, penyesuaian slider persentase real-time, dan **Dynamic Add/Edit Node**.
 
 ---
 
@@ -55,49 +55,47 @@ Analogi utama: Aplikasi ini berfungsi seperti **router jaringan pintar**, tetapi
 
 ### 🔍 2.5 Fundamental Stock Screener & Asset Radar Module (`/screener`)
 - **Fungsi:** Halaman analisis mendalam kandidat saham yang lolos kriteria fundamental (PER, DER, ROE, Dividend Yield).
+- **Live IDX Data:** Terhubung secara live ke **Yahoo Finance Public API** (`https://query1.finance.yahoo.com/v8/finance/chart/{tickerSymbol}`) untuk 10 saham teratas BEI (BBCA, BBRI, BMRI, TLKM, ASII, ICBP, UNVR, ADRO, AMRT, GOTO).
 - **Visualisasi:** **Spider/Radar Chart** interaktif yang membandingkan metrik saham individual terhadap rata-rata sektornya.
 
 ---
 
 ### 📈 2.6 Payday History & Discipline Analytics Module (`/analytics`)
 - **Fungsi:** Halaman analitik histori gajian bulanan pengguna.
-- **Fitur:** Grafik tren akumulasi kekayaan, riwayat kalkulasi historis, dan **Discipline Streak Counter** (misal: "3 Bulan Berturut-turut Disiplin Alokasi").
+- **Fitur:** Grafik tren akumulasi kekayaan, riwayat kalkulasi historis riil dari local storage/SQLite, dan **Discipline Streak Counter**.
 
 ---
 
 ### 🎨 2.7 Proof of Discipline Social Card Generator Module (`/card-generator`)
 - **Fungsi:** Halaman pembuat kartu infografis estetik (*Spotify Wrapped style*) dari alokasi gajian bulan ini.
-- **Fitur:** Menyembunyikan nominal asli (hanya persentase & visual chart), opsi kustomisasi warna tema, dan tombol export/copy image siap share ke Instagram/LinkedIn.
+- **Live Integration:** Membaca data riil dari susunan Node, Survival Score, dan Streak yang sedang aktif di session user.
 
 ---
 
-## 3. User Flow Utama
+## 3. Dynamic Data & Un-Hardcoding Master Plan (v2.3)
 
-```
-1. Top Navbar Navigation:
-   - [/] Command Center Canvas
-   - [/screener] Stock Screener & Radar
-   - [/analytics] Payday History & Discipline Analytics
-   - [/card-generator] Proof of Discipline Social Card
-
-2. Core Flow di Command Center:
-   - Input Gaji -> Canvas Partikel Flow -> Liquid Tank Cap Evaluation -> Overflow Valve Trigger -> Crisis Stress Test -> Timeline Slider Projections.
-```
+| Tahap | Area | Rencana Un-Hardcoding | Status |
+|---|---|---|---|
+| **Tahap 1** | **Node Canvas & Persistence** | Hubungkan `LocalNodeRepository` dengan `LocalStorage` / local memory browser untuk menyimpan posisi X/Y, custom nodes, & target caps. Sediakan modal Add/Delete Node & Reset Layout. | ✅ **COMPLETED** |
+| **Tahap 2** | **Stock Screener Dataset** | Hubungkan `HttpStockDataSource` secara live ke Yahoo Finance Public API untuk emiten saham IDX riil (BBCA, BBRI, BMRI, TLKM, ASII, ICBP, UNVR, ADRO, AMRT, GOTO). | ✅ **COMPLETED** |
+| **Tahap 3** | **Social Card Integration** | Sambungkan `CardGeneratorPage` langsung ke `CommandCenterService` untuk membaca data riil aktif (node %, survival score, streak). | ✅ **COMPLETED** |
+| **Tahap 4** | **Payday History Persistence** | Simpan snapshot otomatis ke SQLite/IndexedDB setiap kali user menyimpan alokasi di Command Center agar grafik `/analytics` ter-update live. | ✅ **COMPLETED** |
 
 ---
 
 ## 4. Functional Requirements (FR)
 
-| ID | Requirement | Prioritas |
-|---|---|---|
-| FR-1 | Form/Node Input Nominal Gaji & Income Sources | Must Have |
-| FR-2 | Interactive Canvas Node Graph (Render nodes & animated flow lines) | Must Have |
-| FR-3 | Dynamic Liquid Tank Capacity & Auto-Overflow Valve logic | Must Have |
-| FR-4 | Macroeconomic Crisis & Stress Testing Engine (Calculation & Survival Score) | Must Have |
-| FR-5 | Parallel Universe Timeline Traveler Projection Engine (Compounding math slider) | Must Have |
-| FR-6 | Fundamental Stock Screener with Spider/Radar Chart (`/screener`) | Must Have |
-| FR-7 | Payday History & Discipline Analytics Page (`/analytics`) | Must Have |
-| FR-8 | Shareable Social Infographic Card Generator (`/card-generator`) | Must Have |
+| ID | Requirement | Prioritas | Status |
+|---|---|---|---|
+| FR-1 | Form/Node Input Nominal Gaji & Income Sources | Must Have | ✅ Implemented |
+| FR-2 | Interactive Canvas Node Graph (Render nodes & animated flow lines) | Must Have | ✅ Implemented |
+| FR-3 | Dynamic Liquid Tank Capacity & Auto-Overflow Valve logic | Must Have | ✅ Implemented |
+| FR-4 | Macroeconomic Crisis & Stress Testing Engine (Calculation & Survival Score) | Must Have | ✅ Implemented |
+| FR-5 | Parallel Universe Timeline Traveler Projection Engine (Compounding math slider) | Must Have | ✅ Implemented |
+| FR-6 | Fundamental Stock Screener with Spider/Radar Chart (`/screener`) | Must Have | ✅ Implemented |
+| FR-7 | Payday History & Discipline Analytics Page (`/analytics`) | Must Have | ✅ Implemented |
+| FR-8 | Shareable Social Infographic Card Generator (`/card-generator`) | Must Have | ✅ Implemented |
+| FR-9 | Dynamic Node Management (Add, Edit Cap, Delete Node) & Local Persistence | Must Have | ✅ Implemented |
 
 ---
 
@@ -108,7 +106,7 @@ Analogi utama: Aplikasi ini berfungsi seperti **router jaringan pintar**, tetapi
 | NFR-1 | Performan Canvas Rendering: Smooth 60 FPS animation |
 | NFR-2 | Pure Vanilla CSS Design System (Bebas dari kebergantungan Tailwind/utility framework) |
 | NFR-3 | Separasi Komponen UI 3-File (Markup `.razor`, Code-Behind `.razor.cs`, Style `.razor.css`) |
-| NFR-4 | Offline-First (PWA): Berjalan 100% di browser via Blazor WebAssembly |
+| NFR-4 | Offline-First (PWA): Berjalan 100% di browser via Blazor WebAssembly & IndexedDB / Local Storage |
 | NFR-5 | Bahasa Codebase: 100% Bahasa Inggris |
 
 ---
@@ -119,13 +117,15 @@ Analogi utama: Aplikasi ini berfungsi seperti **router jaringan pintar**, tetapi
 /AssetRouter
   /Core (Domain Entities, Value Objects, Calculation Engines)
   /Application (Interfaces, DTOs, Services)
-  /Infrastructure (Local Persistence, Mock Data Providers)
+  /Infrastructure (Local Persistence, Repositories, Live Stock Data Providers)
   /Presentation
     /Components (TopCrisisBar, BottomTimelineSlider, NodeGraphCanvas, dll.)
     /Pages (CommandCenter, StockScreenerPage, AnalyticsPage, CardGeneratorPage)
     /Pages/Layout (MainLayout)
+  /wwwroot
+    /css (app.css)
 ```
 
 ---
 
-*Dokumen PRD ini adalah acuan resmi arsitektur produk AssetRouter v2.1.*
+*Dokumen PRD ini adalah acuan resmi arsitektur produk AssetRouter v2.3.*

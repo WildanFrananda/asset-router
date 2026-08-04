@@ -12,9 +12,20 @@ public partial class NodeGraphCanvas {
     [Parameter] public EventCallback<decimal> OnSalaryChanged { get; set; }
     [Parameter] public EventCallback<List<AllocationNode>> OnNodesUpdated { get; set; }
 
+    [Parameter] public EventCallback<AllocationNode> OnNodeAdded { get; set; }
+    [Parameter] public EventCallback<Guid> OnNodeDeleted { get; set; }
+    [Parameter] public EventCallback OnNodesReset { get; set; }
+
     private AllocationNode? _draggedNode;
     private double _dragOffsetX;
     private double _dragOffsetY;
+
+    // Modal State                                                                                                                                                                                      
+    protected bool _showAddModal = false;
+    protected string _newNodeName = "";
+    protected string _newNodeCategory = "Stocks";
+    protected decimal _newNodePercentage = 10m;
+    protected decimal _newNodeTargetCap = 0m;
 
     private async Task OnSalaryInputChange(ChangeEventArgs e) {
         if (decimal.TryParse(e.Value?.ToString(), out decimal val) && val > 0) {
@@ -47,6 +58,41 @@ public partial class NodeGraphCanvas {
             _draggedNode = null;
             await OnNodesUpdated.InvokeAsync(Nodes);
         }
+    }
+
+    protected void ShowAddModal() {
+        _newNodeName = "";
+        _newNodePercentage = 10m;
+        _newNodeTargetCap = 0m;
+        _showAddModal = true;
+    }
+
+    protected void CloseAddModal() => _showAddModal = false;
+
+    protected async Task ConfirmAddNode() {
+        if (string.IsNullOrWhiteSpace(_newNodeName)) return;
+
+        var newNode = new AllocationNode {
+            Id = Guid.NewGuid(),
+            Name = _newNodeName,
+            Category = _newNodeCategory,
+            Percentage = _newNodePercentage,
+            TargetCapAmount = _newNodeTargetCap,
+            CurrentAccumulatedAmount = 0m,
+            X = 620,
+            Y = 100 + (Nodes.Count * 60)
+        };
+
+        _showAddModal = false;
+        await OnNodeAdded.InvokeAsync(newNode);
+    }
+
+    protected async Task TriggerNodeDelete(Guid id) {
+        await OnNodeDeleted.InvokeAsync(id);
+    }
+
+    protected async Task TriggerNodesReset() {
+        await OnNodesReset.InvokeAsync();
     }
 
     protected static string GetCubicBezierPath(double x1, double y1, double x2, double y2) {

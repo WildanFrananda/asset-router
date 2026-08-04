@@ -23,7 +23,7 @@ builder.Services.AddScoped<IAllocationRepository, AllocationRepository>();
 builder.Services.AddScoped<IRuleRepository, RuleRepository>();
 builder.Services.AddScoped<IDbPersistence, IndexedDbPersistence>();
 
-builder.Services.AddScoped<IStockDataSource, HttpStockDAtaSource>();
+builder.Services.AddScoped<IStockDataSource, HttpStockDataSource>();
 builder.Services.AddScoped<StockScreenerService>();
 
 builder.Services.AddScoped<IAllocationPreset, DefaultPreset>();
@@ -41,12 +41,17 @@ builder.Services.AddScoped(sp => new HttpClient {
 
 var host = builder.Build();
 
-using (var scope = host.Services.CreateScope()) {
-    var persistence = scope.ServiceProvider.GetRequiredService<IDbPersistence>();
-    await persistence.RestoreAsync();
+try {
+    using (var scope = host.Services.CreateScope()) {
+        var persistence = scope.ServiceProvider.GetRequiredService<IDbPersistence>();
+        await persistence.RestoreAsync();
 
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await dbContext.Database.EnsureCreatedAsync();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await dbContext.Database.EnsureCreatedAsync();
+    }
+}
+catch (Exception ex) {
+    Console.WriteLine($"Database initialization note: {ex.Message}");
 }
 
 await host.RunAsync();

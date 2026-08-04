@@ -15,12 +15,14 @@ public class CommandState {
 
 public class CommandCenterService {
     private readonly INodeRepository _nodeRepository;
+    private readonly IAllocationRepository _allocationRepository;
     private readonly LiquidOverflowEngine _overflowEngine;
     private readonly StressTestEngine _stressTestEngine;
     private readonly TimelineProjectionEngine _timelineEngine;
 
-    public CommandCenterService(INodeRepository nodeRepository) {
+    public CommandCenterService(INodeRepository nodeRepository, IAllocationRepository allocationRepository) {
         _nodeRepository = nodeRepository;
+        _allocationRepository = allocationRepository;
         _overflowEngine = new LiquidOverflowEngine();
         _stressTestEngine = new StressTestEngine();
         _timelineEngine = new TimelineProjectionEngine();
@@ -53,7 +55,33 @@ public class CommandCenterService {
         };
     }
 
-    public async Task SaveNodePositionsAsync(List<AllocationNode> nodes) {
+    public async Task SaveNodePositionsAsync(List<AllocationNode> nodes, decimal salary = 15000000m) {
         await _nodeRepository.SaveNodesAsync(nodes);
+
+        var snapshot = new AllocationSnapshot {
+            Id = Guid.NewGuid(),
+            CreatedAt = DateTime.UtcNow,
+            Salary = salary,
+            Items = nodes.Select(n => new AssetAllocation {
+                Id = Guid.NewGuid(),
+                Category = n.Category,
+                Percentage = n.Percentage,
+                Amount = n.AllocatedAmount
+            }).ToList()
+        };
+
+        await _allocationRepository.SaveSnapshotAsync(snapshot);
+    }
+
+    public async Task AddNodeAsync(AllocationNode node) {
+        await _nodeRepository.AddNodeAsync(node);
+    }
+
+    public async Task DeleteNodeAsync(Guid nodeId) {
+        await _nodeRepository.DeleteNodeAsync(nodeId);
+    }
+
+    public async Task ResetNodesAsync() {
+        await _nodeRepository.ResetToDefaultAsync();
     }
 }

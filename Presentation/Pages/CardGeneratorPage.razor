@@ -75,48 +75,30 @@
                     <p class="user-tagline">"@CustomTagline"</p>                                                                                                                                        
                 </div>                                                                                                                                                                                  
                                                                                                                                                                                                         
-                <!-- Allocation Percentages Breakdown Grid -->                                                                                                                                          
+                <!-- Allocation Percentages Breakdown Grid (Dynamic Live State) -->                                                                                                                     
                 <div class="card-breakdown-grid">                                                                                                                                                       
-                    <div class="breakdown-item">                                                                                                                                                        
-                        <span class="item-name">Emergency Fund</span>                                                                                                                                   
-                        <span class="item-bar"><span style="width: 20%;"></span></span>                                                                                                                 
-                        <span class="item-pct">20%</span>                                                                                                                                               
-                    </div>                                                                                                                                                                              
-                    <div class="breakdown-item">                                                                                                                                                        
-                        <span class="item-name">Living Expenses</span>                                                                                                                                  
-                        <span class="item-bar"><span style="width: 35%;"></span></span>                                                                                                                 
-                        <span class="item-pct">35%</span>                                                                                                                                               
-                    </div>                                                                                                                                                                              
-                    <div class="breakdown-item">                                                                                                                                                        
-                        <span class="item-name">Fundamental Stocks</span>                                                                                                                               
-                        <span class="item-bar"><span style="width: 20%;"></span></span>                                                                                                                 
-                        <span class="item-pct">20%</span>                                                                                                                                               
-                    </div>                                                                                                                                                                              
-                    <div class="breakdown-item">                                                                                                                                                        
-                        <span class="item-name">Gold Hedging</span>                                                                                                                                     
-                        <span class="item-bar"><span style="width: 15%;"></span></span>                                                                                                                 
-                        <span class="item-pct">15%</span>                                                                                                                                               
-                    </div>                                                                                                                                                                              
-                    <div class="breakdown-item">                                                                                                                                                        
-                        <span class="item-name">Crypto Assets</span>                                                                                                                                    
-                        <span class="item-bar"><span style="width: 10%;"></span></span>                                                                                                                 
-                        <span class="item-pct">10%</span>                                                                                                                                               
-                    </div>                                                                                                                                                                              
-                </div>                                                                                                                                                                                  
-                                                                                                                                                                                                        
-                <!-- Badges Footer -->                                                                                                                                                                  
+                    @foreach (var node in State.CurrentNodes) {                                                                                                                                         
+                        <div class="breakdown-item">                                                                                                                                                    
+                            <span class="item-name">@node.Name</span>                                                                                                                                   
+                            <span class="item-bar"><span style="width: @(node.Percentage)%;"></span></span>
+                            <span class="item-pct">@node.Percentage%</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- Badges Footer (Dynamic Live State) -->                                                                                                                                             
                 <div class="card-badges-footer">                                                                                                                                                        
                     <div class="badge-item">                                                                                                                                                            
                         <span class="badge-icon">🔥</span>                                                                                                                                              
-                        <span>3-Month Streak</span>                                                                                                                                                     
+                        <span>Payday Discipline Active</span>                                                                                                                                           
                     </div>                                                                                                                                                                              
                     <div class="badge-item">                                                                                                                                                            
                         <span class="badge-icon">🛡️</span>                                                                                                                                              
-                        <span>94/100 Survival Score</span>                                                                                                                                              
+                        <span>@(State.ActiveStressTestResult?.SurvivalScore ?? 100)/100 Survival Score</span>                                                                                           
                     </div>                                                                                                                                                                              
                     <div class="badge-item">                                                                                                                                                            
                         <span class="badge-icon">🌊</span>                                                                                                                                              
-                        <span>Auto-Overflow Active</span>                                                                                                                                               
+                        <span>@(State.OverflowResult?.ActiveValves.Count ?? 0) Active Valves</span>                                                                                                     
                     </div>                                                                                                                                                                              
                 </div>                                                                                                                                                                                  
                                                                                                                                                                                                         

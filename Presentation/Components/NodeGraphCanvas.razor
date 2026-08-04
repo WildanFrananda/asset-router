@@ -4,13 +4,22 @@
         @onmousemove="HandleCanvasMouseMove"                                                                                                                                                               
         @onmouseup="HandleCanvasMouseUp">                                                                                                                                                                  
                                                                                                                                                                                                         
+    <!-- Top Action Bar Inside Canvas -->                                                                                                                                                               
+    <div class="canvas-action-bar">                                                                                                                                                                     
+        <button class="btn-canvas-action btn-add-node" @onclick="ShowAddModal">                                                                                                                         
+            <span>➕ Add Custom Node</span>                                                                                                                                                             
+        </button>                                                                                                                                                                                       
+        <button class="btn-canvas-action btn-reset-nodes" @onclick="TriggerNodesReset">                                                                                                                 
+            <span>🔄 Reset to Default Layout</span>                                                                                                                                                     
+        </button>                                                                                                                                                                                       
+    </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
     <!-- Background Sci-Fi Grid Overlay -->                                                                                                                                                             
     <div class="canvas-grid-bg"></div>                                                                                                                                                                  
                                                                                                                                                                                                         
     <!-- SVG Layer for Pipe Connections & Animated Fluid Flow -->                                                                                                                                       
     <svg class="canvas-svg-layer">                                                                                                                                                                      
         <defs>                                                                                                                                                                                          
-            <!-- Flow Gradient Defs -->                                                                                                                                                                 
             <linearGradient id="normalFlowGrad" x1="0%" y1="0%" x2="100%" y2="0%">                                                                                                                      
                 <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8" />                                                                                                                            
                 <stop offset="100%" stop-color="#818cf8" stop-opacity="0.8" />                                                                                                                          
@@ -22,7 +31,7 @@
         </defs>                                                                                                                                                                                         
                                                                                                                                                                                                         
         <!-- Income Node to Sub-Nodes Connections -->                                                                                                                                                   
-        @foreach (var node in Nodes) {
+        @foreach (var node in Nodes.Where(n => n.Category != "Income").DistinctBy(n => n.Id)) {
             var pathD = GetCubicBezierPath(40 + 200, 180 + 70, node.X, node.Y + 70);                                                                                                                    
             <path d="@pathD" class="svg-pipe-back" />                                                                                                                                                   
             <path d="@pathD" class="svg-pipe-front normal-flow-anim" />                                                                                                                                 
@@ -62,7 +71,7 @@
         </div>                                                                                                                                                                                          
                                                                                                                                                                                                         
         <!-- 2. Dynamic Bucket Nodes -->                                                                                                                                                                
-        @foreach (var node in Nodes) {
+        @foreach (var node in Nodes.Where(n => n.Category != "Income").DistinctBy(n => n.Id)) {                                                                                                                                                                                               
             <div class="node-card @(node.IsCapReached ? "node-cap-reached" : "")"                                                                                                                       
                     style="left: @(node.X)px; top: @(node.Y)px;"                                                                                                                                           
                     @onmousedown="(e) => StartDraggingNode(e, node)">                                                                                                                                      
@@ -70,7 +79,11 @@
                 <div class="node-header">                                                                                                                                                               
                     <span class="node-category-badge badge-@node.Category.ToLower()">@node.Category</span>                                                                                              
                     <span class="node-title">@node.Name</span>                                                                                                                                          
-                    <span class="drag-handle" title="Drag to Reposition">⋮⋮</span>                                                                                                                      
+                                                                                                                                                                                                        
+                    <div class="node-actions">                                                                                                                                                          
+                        <button class="btn-delete-node" title="Delete Node" @onclick:stopPropagation="true" @onclick="() => TriggerNodeDelete(node.Id)">🗑️</button>                                     
+                        <span class="drag-handle" title="Drag to Reposition">⋮⋮</span>                                                                                                                  
+                    </div>                                                                                                                                                                              
                 </div>                                                                                                                                                                                  
                                                                                                                                                                                                         
                 <div class="node-body">                                                                                                                                                                 
@@ -113,4 +126,48 @@
             </div>                                                                                                                                                                                      
         }                                                                                                                                                                                               
     </div>                                                                                                                                                                                              
+                                                                                                                                                                                                        
+    <!-- Modal Form: Add Custom Node -->                                                                                                                                                                
+    @if (_showAddModal) {
+        <div class="modal-backdrop">                                                                                                                                                                    
+            <div class="modal-card">                                                                                                                                                                    
+                <div class="modal-header">                                                                                                                                                              
+                    <h4>➕ Add Custom Allocation Node</h4>                                                                                                                                              
+                    <button class="btn-close-modal" @onclick="CloseAddModal">✕</button>                                                                                                                 
+                </div>                                                                                                                                                                                  
+                <div class="modal-body">                                                                                                                                                                
+                    <div class="form-group">                                                                                                                                                            
+                        <label>Node Name</label>                                                                                                                                                        
+                        <input type="text" class="modal-input" @bind="_newNodeName" placeholder="e.g. Property Investment, Child Education" />                                                          
+                    </div>                                                                                                                                                                              
+                                                                                                                                                                                                        
+                    <div class="form-group">                                                                                                                                                            
+                        <label>Category</label>                                                                                                                                                         
+                        <select class="modal-select" @bind="_newNodeCategory">                                                                                                                          
+                            <option value="Stocks">Stocks</option>                                                                                                                                      
+                            <option value="Gold">Gold</option>                                                                                                                                          
+                            <option value="Crypto">Crypto</option>                                                                                                                                      
+                            <option value="Emergency">Emergency</option>                                                                                                                                
+                            <option value="Expenses">Expenses</option>                                                                                                                                  
+                            <option value="Custom">Custom / Property</option>                                                                                                                           
+                        </select>                                                                                                                                                                       
+                    </div>                                                                                                                                                                              
+                                                                                                                                                                                                        
+                    <div class="form-group">                                                                                                                                                            
+                        <label>Initial Allocation (%)</label>                                                                                                                                           
+                        <input type="number" class="modal-input" @bind="_newNodePercentage" min="0" max="100" />                                                                                        
+                    </div>                                                                                                                                                                              
+                                                                                                                                                                                                        
+                    <div class="form-group">                                                                                                                                                            
+                        <label>Target Cap Amount (Rupiah, 0 = Unlimited)</label>                                                                                                                        
+                        <input type="number" class="modal-input" @bind="_newNodeTargetCap" step="1000000" />                                                                                            
+                    </div>                                                                                                                                                                              
+                </div>                                                                                                                                                                                  
+                <div class="modal-footer">                                                                                                                                                              
+                    <button class="btn-modal-cancel" @onclick="CloseAddModal">Cancel</button>                                                                                                           
+                    <button class="btn-modal-save" @onclick="ConfirmAddNode">Create Node</button>                                                                                                       
+                </div>                                                                                                                                                                                  
+            </div>                                                                                                                                                                                      
+        </div>                                                                                                                                                                                          
+    }                                                                                                                                                                                                   
 </div>

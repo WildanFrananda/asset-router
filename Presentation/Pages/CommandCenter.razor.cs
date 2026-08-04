@@ -55,4 +55,19 @@ public partial class CommandCenter {
         await Task.Delay(300); // UI feel                                                                                                                                                               
         _isSaving = false;
     }
+
+    protected async Task HandleNodeAdded(AllocationNode node) {
+        await CommandCenterService.AddNodeAsync(node);
+        State = await CommandCenterService.LoadCommandCenterStateAsync(State.MonthlySalary);
+    }
+
+    protected async Task HandleNodeDeleted(Guid nodeId) {
+        await CommandCenterService.DeleteNodeAsync(nodeId);
+        State = await CommandCenterService.LoadCommandCenterStateAsync(State.MonthlySalary);
+    }
+
+    protected async Task HandleNodesReset() {
+        await CommandCenterService.ResetNodesAsync();
+        State = await CommandCenterService.LoadCommandCenterStateAsync(State.MonthlySalary);
+    }
 }
